@@ -3,639 +3,572 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gerador WhatsApp & PIX</title>
+<title>VUON SOCIEDADE DE CRÉDITO DIRETO S.A.</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
   :root {
-    --bg-start: #0f0f23;
-    --bg-end: #1a1a2e;
-    --card: rgba(255,255,255,0.06);
-    --card-border: rgba(255,255,255,0.08);
-    --text: #f0f0f5;
-    --text-sec: #a0a0b0;
-    --text-ter: #6e6e80;
-    --input-bg: rgba(255,255,255,0.05);
-    --input-border: rgba(255,255,255,0.12);
-    --accent: #00d4aa;
-    --accent-glow: rgba(0,212,170,0.15);
-    --accent-hover: #00e6b8;
-    --whatsapp: #25d366;
-    --whatsapp-glow: rgba(37,211,102,0.15);
-    --pix: #00b4d8;
-    --pix-glow: rgba(0,180,216,0.15);
-    --radius: 16px;
-    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    --text-primary: #1a1a1a;
+    --text-secondary: #666;
+    --text-tertiary: #999;
+    --border: #e5e5e5;
+    --surface: #fff;
+    --surface-muted: #f5f5f5;
+    --accent-green: #25D366;
+    --positive: #43a047;
+    --warning: #fb8c00;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); color: var(--text-primary); line-height: 1.5; background: var(--surface); }
+  button, input, select { font: inherit; }
+  a { text-decoration: none; color: inherit; }
+  svg { display: inline-block; vertical-align: middle; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface); z-index: 50; max-width: 900px; margin: 0 auto; }
+  .logo { font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .nav { display: flex; gap: 20px; }
+  .nav a { color: var(--text-secondary); font-size: 14px; transition: color 0.2s; cursor: pointer; }
+  .nav a:hover { color: var(--text-primary); }
 
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 50%, #16213e 100%);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 48px 16px;
-    line-height: 1.6;
-  }
+  .section { padding: 48px 24px; max-width: 900px; margin: 0 auto; }
+  .section-title { font-size: 28px; font-weight: 600; margin-bottom: 8px; text-align: center; }
+  .section-sub { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 32px; }
 
-  .container { max-width: 520px; margin: 0 auto; }
+  .hero { text-align: center; padding: 64px 24px; max-width: 900px; margin: 0 auto; }
+  .hero h1 { font-size: 36px; font-weight: 600; margin-bottom: 12px; line-height: 1.15; }
+  .hero p { font-size: 17px; color: var(--text-secondary); max-width: 520px; margin: 0 auto 28px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn-primary { background: var(--text-primary); color: #fff; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: var(--surface-muted); }
+  .btn-wa { background: var(--accent-green); color: #fff; }
+  .btn-wa:hover { opacity: 0.9; }
+  .hero-badges { display: flex; justify-content: center; gap: 24px; margin-top: 32px; flex-wrap: wrap; }
+  .badge { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); }
 
-  header { text-align: center; margin-bottom: 40px; }
-  header h1 {
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: -1px;
-    background: linear-gradient(135deg, #fff 0%, #a0a0d0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  header p {
-    color: var(--text-sec);
-    font-size: 15px;
-    margin-top: 8px;
-    font-weight: 400;
-  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: all 0.2s; cursor: pointer; }
+  .card:hover { border-color: var(--text-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  .card.active { border-color: var(--text-primary); background: var(--surface-muted); }
+  .card-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--surface-muted); margin-bottom: 12px; }
+  .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .card p { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
+  .card .rate { font-size: 26px; font-weight: 600; margin-bottom: 4px; }
+  .card .rate-label { font-size: 12px; color: var(--text-tertiary); }
 
-  .tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    padding: 6px;
-    border-radius: var(--radius);
-    backdrop-filter: blur(20px);
-  }
-  .tab {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    border-radius: 12px;
-    background: transparent;
-    color: var(--text-sec);
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
-  }
-  .tab::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 12px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .tab:hover { color: var(--text); }
-  .tab.active { color: #fff; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
-  .tab.active#tab-wa::before {
-    background: linear-gradient(135deg, var(--whatsapp), #128c7e);
-    opacity: 1;
-  }
-  .tab.active#tab-pix::before {
-    background: linear-gradient(135deg, var(--pix), #0077b6);
-    opacity: 1;
-  }
-  .tab span, .tab svg { position: relative; z-index: 1; }
+  .sim { border: 1px solid var(--border); border-radius: 12px; padding: 28px; max-width: 560px; margin: 0 auto; }
+  .sim-row { margin-bottom: 16px; }
+  .sim-row label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500; }
+  .sim-row input, .sim-row select { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 15px; background: var(--surface); color: var(--text-primary); }
+  .sim-row input:focus, .sim-row select:focus { outline: none; border-color: var(--text-primary); }
+  .sim-result { background: var(--surface-muted); border-radius: 10px; padding: 18px; margin-top: 18px; }
+  .sim-result-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 14px; }
+  .sim-result-row.total { font-size: 18px; font-weight: 600; border-top: 1px solid var(--border); margin-top: 10px; padding-top: 14px; }
+  .sim-result-row .val { font-weight: 500; }
 
-  .panel { display: none; animation: fadeIn 0.4s ease; }
-  .panel.active { display: block; }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { font-weight: 600; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  tr:hover td { background: var(--surface-muted); }
 
-  .card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius);
-    padding: 28px;
-    backdrop-filter: blur(20px);
-    box-shadow: var(--shadow);
-  }
+  .cta-bar { background: var(--surface-muted); border-radius: 12px; padding: 40px; text-align: center; margin: 32px auto; max-width: 900px; }
+  .cta-bar h3 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+  .cta-bar p { font-size: 15px; color: var(--text-secondary); margin-bottom: 20px; }
 
-  .field { margin-bottom: 18px; }
-  .field label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-sec);
-    margin-bottom: 6px;
-    letter-spacing: 0.2px;
-  }
-  .field label .req { color: var(--accent); margin-left: 2px; }
-  .field input,
-  .field textarea {
-    width: 100%;
-    padding: 13px 16px;
-    border: 1px solid var(--input-border);
-    border-radius: 12px;
-    background: var(--input-bg);
-    color: var(--text);
-    font-size: 15px;
-    font-family: inherit;
-    outline: none;
-    transition: all 0.25s ease;
-  }
-  .field input:focus,
-  .field textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-glow), 0 0 20px var(--accent-glow);
-    background: rgba(255,255,255,0.08);
-  }
-  .field textarea { resize: vertical; min-height: 88px; }
-  .field .hint {
-    font-size: 12px;
-    color: var(--text-ter);
-    margin-top: 5px;
-  }
-  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .feature { display: flex; gap: 12px; align-items: flex-start; padding: 16px; }
+  .feature-icon { flex-shrink: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--surface-muted); }
+  .feature h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .feature p { font-size: 13px; color: var(--text-secondary); margin: 0; }
 
-  .actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 13px 22px;
-    border: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
-    position: relative;
-    overflow: hidden;
-  }
-  .btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-  .btn:hover::after { opacity: 1; }
-  .btn:active { transform: scale(0.96); }
-  .btn span, .btn svg { position: relative; z-index: 1; }
+  .testi { border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+  .testi-stars { color: var(--warning); margin-bottom: 10px; font-size: 15px; }
+  .testi-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 14px; font-style: italic; line-height: 1.6; }
+  .testi-author { font-size: 14px; font-weight: 600; }
+  .testi-role { font-size: 12px; color: var(--text-tertiary); }
 
-  .btn-wa {
-    background: linear-gradient(135deg, var(--whatsapp), #128c7e);
-    color: #fff;
-    box-shadow: 0 4px 16px var(--whatsapp-glow);
-  }
-  .btn-wa:hover {
-    box-shadow: 0 6px 24px var(--whatsapp-glow);
-    transform: translateY(-1px);
-  }
-  .btn-pix {
-    background: linear-gradient(135deg, var(--pix), #0077b6);
-    color: #fff;
-    box-shadow: 0 4px 16px var(--pix-glow);
-  }
-  .btn-pix:hover {
-    box-shadow: 0 6px 24px var(--pix-glow);
-    transform: translateY(-1px);
-  }
-  .btn-ghost {
-    background: rgba(255,255,255,0.06);
-    color: var(--text);
-    border: 1px solid var(--input-border);
-  }
-  .btn-ghost:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.2);
-  }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; cursor: pointer; font-size: 15px; font-weight: 500; }
+  .faq-q svg { transition: transform 0.2s; flex-shrink: 0; margin-left: 12px; }
+  .faq-item.open .faq-q svg { transform: rotate(180deg); }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .faq-item.open .faq-a { max-height: 400px; }
+  .faq-a-inner { padding-bottom: 18px; font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
 
-  .result-box {
-    margin-top: 18px;
-    padding: 16px;
-    border-radius: 12px;
-    background: rgba(0,0,0,0.25);
-    border: 1px solid rgba(255,255,255,0.06);
-    word-break: break-all;
-    display: none;
-    animation: fadeIn 0.3s ease;
-  }
-  .result-box.show { display: block; }
-  .result-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-ter);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .result-text {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12.5px;
-    line-height: 1.7;
-    color: var(--text-sec);
-    word-break: break-all;
-  }
+  .footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; max-width: 900px; margin: 0 auto; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); cursor: pointer; }
+  .footer-links a:hover { color: var(--text-primary); text-decoration: underline; }
+  .footer-copy { font-size: 12px; color: var(--text-tertiary); }
 
-  .qr-section {
-    display: none;
-    margin-top: 24px;
-    text-align: center;
-    padding: 28px;
-    background: #ffffff;
-    border-radius: 16px;
-    border: 3px solid var(--accent);
-    box-shadow: 0 0 40px var(--accent-glow), 0 8px 32px rgba(0,0,0,0.3);
-    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  .qr-section.show { display: block; }
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.9) translateY(10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  .qr-section canvas {
-    display: block;
-    margin: 0 auto;
-    border-radius: 8px;
-  }
-  .qr-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .qr-sub {
-    font-size: 13px;
-    color: #6e6e80;
-    margin-top: 14px;
-    font-weight: 500;
-  }
-  .qr-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 16px;
-  }
-  .qr-actions .btn {
-    padding: 10px 18px;
-    font-size: 14px;
-  }
-  .btn-download {
-    background: linear-gradient(135deg, #1a1a2e, #0f0f23);
-    color: #fff;
-  }
-  .btn-download:hover { opacity: 0.9; }
+  .float-wa { position: fixed; bottom: 24px; right: 24px; z-index: 100; }
+  .float-wa a { display: flex; align-items: center; gap: 8px; background: var(--accent-green); color: #fff; padding: 14px 22px; border-radius: 50px; font-size: 14px; font-weight: 500; box-shadow: 0 4px 16px rgba(37,211,102,0.35); transition: all 0.2s; }
+  .float-wa a:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,211,102,0.45); }
 
-  .toast {
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: linear-gradient(135deg, var(--accent), #00b4d8);
-    color: #0f0f23;
-    padding: 14px 28px;
-    border-radius: 14px;
-    font-size: 14px;
-    font-weight: 700;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
-    z-index: 1000;
-    white-space: nowrap;
-    box-shadow: 0 8px 32px rgba(0,212,170,0.3);
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.show { display: flex; }
+  .modal { background: var(--surface); border-radius: 12px; max-width: 680px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 32px; position: relative; }
+  .modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: none; background: transparent; cursor: pointer; color: var(--text-secondary); }
+  .modal-close:hover { background: var(--surface-muted); color: var(--text-primary); }
+  .modal h2 { font-size: 22px; font-weight: 600; margin-bottom: 16px; }
+  .modal h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; }
+  .modal p, .modal li { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+  .modal ul { padding-left: 20px; margin: 8px 0; }
+  .modal li { margin-bottom: 6px; }
 
-  footer {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 12px;
-    color: var(--text-ter);
-    font-weight: 500;
-  }
-
-  @media (max-width: 520px) {
-    .row2 { grid-template-columns: 1fr; }
-    header h1 { font-size: 26px; }
-    .card { padding: 20px; }
-    body { padding: 24px 12px; }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 28px; }
+    .section-title { font-size: 24px; }
+    .nav { display: none; }
+    .grid { grid-template-columns: 1fr; }
+    .float-wa a span { display: none; }
+    .float-wa a { padding: 14px; }
   }
 </style>
+<base target="_blank">
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
 
-<div class="container">
-  <header>
-    <h1>Gerador WhatsApp & PIX</h1>
-    <p>Crie links de WhatsApp e códigos PIX com QR Code em segundos</p>
-  </header>
-
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('wa')" id="tab-wa">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      <span>WhatsApp</span>
-    </button>
-    <button class="tab" onclick="switchTab('pix')" id="tab-pix">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-      <span>PIX</span>
-    </button>
+<div class="header">
+  <div class="logo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" fill="currentColor"/></svg>
+    VUON
   </div>
-
-  <div class="panel active" id="panel-wa">
-    <div class="card">
-      <div class="field">
-        <label for="wa-numero">Número do WhatsApp</label>
-        <input type="tel" id="wa-numero" placeholder="Ex: 11999998888" inputmode="numeric" oninput="gerarLinkWA()">
-        <div class="hint">Digite apenas números, com DDD (ex: 11999998888)</div>
-      </div>
-      <div class="field">
-        <label for="wa-mensagem">Mensagem (opcional)</label>
-        <textarea id="wa-mensagem" placeholder="Olá! Gostaria de saber mais sobre..." oninput="gerarLinkWA()"></textarea>
-      </div>
-      <div class="actions">
-        <button class="btn btn-wa" onclick="abrirLinkWA()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          <span>Abrir link</span>
-        </button>
-        <button class="btn btn-ghost" onclick="copiarLinkWA()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span>Copiar link</span>
-        </button>
-      </div>
-      <div class="result-box" id="wa-result">
-        <div class="result-label">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          Link gerado
-        </div>
-        <div class="result-text" id="wa-link-text"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel" id="panel-pix">
-    <div class="card">
-      <div class="field">
-        <label for="pix-chave">Chave PIX <span class="req">*</span></label>
-        <input type="text" id="pix-chave" placeholder="CPF, CNPJ, e-mail, celular ou chave aleatória" oninput="gerarPix()">
-      </div>
-      <div class="row2">
-        <div class="field">
-          <label for="pix-valor">Valor (R$)</label>
-          <input type="text" id="pix-valor" placeholder="0,00" inputmode="decimal" oninput="formatarValor(this); gerarPix()">
-        </div>
-        <div class="field">
-          <label for="pix-txid">Identificador (TXID)</label>
-          <input type="text" id="pix-txid" placeholder="***" maxlength="25" oninput="gerarPix()">
-        </div>
-      </div>
-      <div class="field">
-        <label for="pix-nome">Nome do recebedor <span class="req">*</span></label>
-        <input type="text" id="pix-nome" placeholder="Nome completo" maxlength="25" oninput="gerarPix()">
-      </div>
-      <div class="field">
-        <label for="pix-cidade">Cidade <span class="req">*</span></label>
-        <input type="text" id="pix-cidade" placeholder="São Paulo" maxlength="15" oninput="gerarPix()">
-      </div>
-      <div class="actions">
-        <button class="btn btn-pix" onclick="copiarPix()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span>Copiar código PIX</span>
-        </button>
-      </div>
-
-      <div class="result-box" id="pix-result">
-        <div class="result-label">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          Código PIX copia e cola
-        </div>
-        <div class="result-text" id="pix-code-text"></div>
-      </div>
-
-      <div class="qr-section" id="qr-section">
-        <div class="qr-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00d4aa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          QR Code PIX
-        </div>
-        <div id="qr-placeholder"></div>
-        <div class="qr-sub">Escaneie com o app do seu banco</div>
-        <div class="qr-actions">
-          <button class="btn btn-download" onclick="baixarQRCode()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Baixar QR Code</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    Funciona 100% no navegador · Sem servidor · Sem rastreamento
-  </footer>
+  <nav class="nav">
+    <a onclick="scrollToId('produtos')">Produtos</a>
+    <a onclick="scrollToId('simulador')">Simulador</a>
+    <a onclick="scrollToId('vantagens')">Vantagens</a>
+    <a onclick="scrollToId('faq')">FAQ</a>
+  </nav>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="hero" id="inicio" style="position:relative;overflow:hidden;border-radius:0;">
+  <!-- Background image -->
+  <div style="position:absolute;inset:0;z-index:0;">
+    <img src="https://kimi-web-img.kimi.ai/img/loanslan.com/41f2d1e7ad3c7cd771495c575d7d0b18f10164a9.jpg" alt="Atendimento ao cliente sobre empréstimo" style="width:100%;height:100%;object-fit:cover;object-position:center;">
+    <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55);"></div>
+  </div>
+  <!-- Content -->
+  <div style="position:relative;z-index:1;color:#fff;">
+    <h1 style="color:#fff;">Crédito que cabe no seu bolso</h1>
+    <p style="color:rgba(255,255,255,0.85);max-width:520px;margin:0 auto 28px;">Empréstimo pessoal, empresarial e consignado para aposentados com as menores taxas do mercado. Aprovação em minutos, dinheiro na conta em até 24h.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a class="btn btn-wa" href="https://wa.me/5511999999999?text=Olá!%20Quero%20solicitar%20um%20empréstimo" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17.6 6.32A7.85 7.85 0 0 0 12 4a7.94 7.94 0 0 0-6.88 12.15l-1.1 4.01 4.1-1.08A7.93 7.93 0 0 0 20 12a7.85 7.85 0 0 0-2.4-5.68zM12 18.5a6.46 6.46 0 0 1-3.3-.91l-.24-.14-2.47.65.66-2.4-.16-.25a6.46 6.46 0 0 1 5.51-9.95 6.46 6.46 0 0 1 6.45 6.45 6.47 6.47 0 0 1-6.45 6.45zm3.55-4.85c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.44.1s-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.58-.98 5.97 5.97 0 0 1-1.1-1.36c-.12-.2 0-.3.09-.4.09-.09.2-.23.3-.34.1-.12.13-.2.2-.33.06-.13.03-.24-.02-.34s-.44-1.06-.6-1.45c-.16-.38-.32-.33-.44-.34l-.37-.01a.72.72 0 0 0-.52.24c-.18.2-.68.66-.68 1.62s.7 1.88.79 2.01c.1.13 1.36 2.08 3.3 2.92.46.2.82.32 1.1.4.46.15.88.13 1.21.08.37-.05 1.17-.48 1.33-.94.17-.46.17-.85.12-.94-.05-.08-.18-.13-.38-.23z" fill="currentColor"/></svg>
+        Falar no WhatsApp
+      </a>
+      <button class="btn btn-ghost" onclick="scrollToId('simulador')" style="color:#fff;border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 3.08496C4.55224 3.08496 4.99993 3.53273 5 4.08496V18.0361H19.9941L20.0967 18.041C20.6008 18.0923 20.9941 18.5185 20.9941 19.0361C20.9941 19.5538 20.6008 19.9799 20.0967 20.0312L19.9941 20.0361H5C3.89546 20.0361 3.00005 19.1407 3 18.0361V4.08496C3.00007 3.53273 3.44776 3.08496 4 3.08496ZM18.2627 6.5166C18.6316 6.10561 19.2638 6.07157 19.6748 6.44043C20.0858 6.80932 20.1198 7.44153 19.751 7.85254L13.0906 15.3663C12.7217 15.7773 12.0895 15.8113 11.6785 15.4425C11.2674 15.0736 11.2334 14.4414 11.6023 14.0304L18.2627 6.5166ZM8.65911 11.1201C9.30773 11.7687 9.30773 12.8232 8.65911 13.4718L6.65911 15.4718C6.01049 16.1204 4.95595 16.1204 4.30733 15.4718C3.65871 14.8232 3.65871 13.7687 4.30733 13.1201L6.30733 11.1201C6.95595 10.4715 8.01049 10.4715 8.65911 11.1201Z" fill="currentColor"/></svg>
+        Simular agora
+      </button>
+    </div>
+    <div class="hero-badges" style="margin-top:32px;">
+      <div class="badge" style="color:rgba(255,255,255,0.85);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19.3027 5.9053C19.6542 5.55397 20.2247 5.55388 20.5761 5.9053C20.9273 6.25675 20.9273 6.82734 20.5761 7.17874L9.65911 18.0948C9.30773 18.4461 8.73814 18.446 8.38665 18.0948L3.42376 13.1328C3.0726 12.7814 3.07263 12.2118 3.42376 11.8604C3.77524 11.509 4.34575 11.5089 4.6972 11.8604L9.02239 16.1856L19.3027 5.9053Z" fill="var(--positive)"/></svg>
+        Aprovação em 5 min
+      </div>
+      <div class="badge" style="color:rgba(255,255,255,0.85);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3.8H7C5.78497 3.8 4.8 4.78497 4.8 6V15.7647C4.8 16.574 5.24438 17.318 5.95698 17.7017L10.957 20.394C11.6081 20.7446 12.3919 20.7446 13.043 20.394L18.043 17.7017C18.7556 17.318 19.2 16.574 19.2 15.7647V6C19.2 4.78497 18.215 3.8 17 3.8ZM7 2C4.79086 2 3 3.79086 3 6V15.7647C3 17.2362 3.80796 18.5889 5.1036 19.2866L10.1036 21.9789C11.2875 22.6164 12.7125 22.6164 13.8964 21.9789L18.8964 19.2866C20.192 18.5889 21 17.2362 21 15.7647V6C21 3.79086 19.2091 2 17 2H7Z" fill="var(--warning)"/></svg>
+        100% Seguro
+      </div>
+      <div class="badge" style="color:rgba(255,255,255,0.85);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2.1001C17.4676 2.10031 21.8994 6.53286 21.8994 12.0005C21.8992 17.4679 17.4674 21.8997 12 21.8999C6.53237 21.8999 2.09982 17.4681 2.09961 12.0005C2.09961 6.53273 6.53224 2.1001 12 2.1001ZM12 3.8999C7.52636 3.8999 3.89941 7.52684 3.89941 12.0005C3.89963 16.474 7.52649 20.1001 12 20.1001C16.4733 20.0999 20.0994 16.4738 20.0996 12.0005C20.0996 7.52697 16.4735 3.90011 12 3.8999ZM12 9.50049C12.4971 9.50049 12.9 9.90344 12.9 10.4005V16.4005C12.9 16.8975 12.4971 17.3005 12 17.3005C11.503 17.3005 11.1 16.8975 11.1 16.4005V10.4005C11.1 9.90344 11.503 9.50049 12 9.50049ZM12 7.1001C12.4971 7.1001 12.9 7.50305 12.9 8.0001C12.9 8.49714 12.4971 8.9001 12 8.9001C11.503 8.9001 11.1 8.49714 11.1 8.0001C11.1 7.50305 11.503 7.1001 12 7.1001Z" fill="var(--accent-green)"/></svg>
+        Sem consulta ao SPC/Serasa
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="produtos">
+  <div class="section-title">Escolha seu empréstimo</div>
+  <div class="section-sub">Três linhas de crédito pensadas para diferentes necessidades</div>
+  <div class="grid">
+    <div class="card" onclick="selectProduct('pessoal')" id="card-pessoal">
+      <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M11.9997 12.8779C16.0197 12.878 19.4393 15.3848 20.7048 18.8828C21.0812 19.9234 20.2782 20.8962 19.2038 21.0137L18.9861 21.0264H5.0134L4.79562 21.0137C3.7213 20.8961 2.91743 19.9233 3.29367 18.8828C4.55905 15.3847 7.9797 12.8781 11.9997 12.8779ZM11.9997 14.6777C8.84467 14.6779 6.17462 16.5794 5.09152 19.2256H18.9079C17.8248 16.5793 15.1549 14.6778 11.9997 14.6777ZM12.2312 3.00586C14.6088 3.12012 16.4998 5.06775 16.4998 7.49998C16.4998 9.98524 14.485 12 11.9998 12C9.51453 12 7.49976 9.98524 7.49976 7.49998C7.49976 5.06775 9.39081 3.12012 11.7684 3.00586L11.9998 3C12.0776 3 12.1546 3.00195 12.2312 3.00586ZM11.9998 4.79999C10.5086 4.79999 9.2998 6.00882 9.2998 7.49998C9.2998 8.99114 10.5086 10.2 11.9998 10.2C13.491 10.2 14.6998 8.99114 14.6998 7.49998C14.6998 6.00882 13.491 4.79999 11.9998 4.79999Z" fill="currentColor"/></svg></div>
+      <h3>Empréstimo Pessoal</h3>
+      <p>De R$ 5 mil a R$ 50 mil para qualquer finalidade. Use como quiser: viagem, reforma, dívidas ou investimento.</p>
+      <div class="rate">1,49%</div>
+      <div class="rate-label">a.m. | até 48x</div>
+    </div>
+    <div class="card" onclick="selectProduct('empresa')" id="card-empresa">
+      <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13.5004 3.1001C13.9972 3.10031 14.3998 3.50356 14.3998 4.00049C14.3995 4.4972 13.997 4.90039 13.5004 4.90039H10.5004C10.0035 4.90039 9.6008 4.4972 9.60059 4.00049C9.60059 3.50356 10.0032 3.10031 10.5004 3.1001H13.5004ZM4.00049 7.1001H20.0005C20.4974 7.10031 20.9001 7.50356 20.9001 8.00049V20.0005C20.9001 20.4974 20.4974 20.9007 20.0005 20.9009H4.00049C3.50356 20.9007 3.1008 20.4974 3.10059 20.0005V8.00049C3.1008 7.50356 3.50356 7.10031 4.00049 7.1001ZM4.90039 19.1006H19.1004V8.90039H4.90039V19.1006Z" fill="currentColor"/></svg></div>
+      <h3>Empréstimo Empresarial</h3>
+      <p>Capital de giro, expansão ou equipamentos. De R$ 10 mil a R$ 500 mil com carência de até 90 dias.</p>
+      <div class="rate">0,99%</div>
+      <div class="rate-label">a.m. | até 60x</div>
+    </div>
+    <div class="card" onclick="selectProduct('aposentado')" id="card-aposentado">
+      <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3.8H7C5.78497 3.8 4.8 4.78497 4.8 6V15.7647C4.8 16.574 5.24438 17.318 5.95698 17.7017L10.957 20.394C11.6081 20.7446 12.3919 20.7446 13.043 20.394L18.043 17.7017C18.7556 17.318 19.2 16.574 19.2 15.7647V6C19.2 4.78497 18.215 3.8 17 3.8ZM7 2C4.79086 2 3 3.79086 3 6V15.7647C3 17.2362 3.80796 18.5889 5.1036 19.2866L10.1036 21.9789C11.2875 22.6164 12.7125 22.6164 13.8964 21.9789L18.8964 19.2866C20.192 18.5889 21 17.2362 21 15.7647V6C21 3.79086 19.2091 2 17 2H7Z" fill="currentColor"/></svg></div>
+      <h3>Consignado Aposentados</h3>
+      <p>Desconto direto na folha ou benefício do INSS. Taxas reduzidas e aprovação facilitada de R$ 1 mil a R$ 30 mil.</p>
+      <div class="rate">0,99%</div>
+      <div class="rate-label">a.m. | até 72x</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="simulador">
+  <div class="section-title">Simule seu empréstimo</div>
+  <div class="section-sub">Preencha os dados abaixo e veja quanto você vai pagar no total</div>
+  <div class="sim">
+    <div class="sim-row">
+      <label>Tipo de empréstimo</label>
+      <select id="sim-type" onchange="calcSim()">
+        <option value="pessoal">Empréstimo Pessoal</option>
+        <option value="empresa">Empréstimo Empresarial</option>
+        <option value="aposentado">Consignado Aposentados</option>
+      </select>
+    </div>
+    <div class="sim-row">
+      <label>Valor desejado</label>
+      <input type="text" id="sim-valor" value="R$ 10.000,00" oninput="maskMoney(this); calcSim()">
+    </div>
+    <div class="sim-row">
+      <label>Parcelas</label>
+      <select id="sim-parcelas" onchange="calcSim()">
+        <option value="12">12 meses</option>
+        <option value="24">24 meses</option>
+        <option value="36" selected>36 meses</option>
+        <option value="48">48 meses</option>
+        <option value="60">60 meses</option>
+        <option value="72">72 meses</option>
+      </select>
+    </div>
+    <div class="sim-result" id="sim-result">
+      <div class="sim-result-row"><span>Taxa de juros</span><span class="val" id="res-taxa">1,49% a.m.</span></div>
+      <div class="sim-result-row"><span>Valor da parcela</span><span class="val" id="res-parcela">R$ 360,92</span></div>
+      <div class="sim-result-row"><span>Total em juros</span><span class="val" id="res-juros">R$ 2.993,20</span></div>
+      <div class="sim-result-row total"><span>Total a pagar</span><span class="val" id="res-total">R$ 12.993,20</span></div>
+    </div>
+    <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
+      <a class="btn btn-wa" id="sim-wa-btn" href="#" target="_blank" style="flex:1;justify-content:center;min-width:200px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17.6 6.32A7.85 7.85 0 0 0 12 4a7.94 7.94 0 0 0-6.88 12.15l-1.1 4.01 4.1-1.08A7.93 7.93 0 0 0 20 12a7.85 7.85 0 0 0-2.4-5.68zM12 18.5a6.46 6.46 0 0 1-3.3-.91l-.24-.14-2.47.65.66-2.4-.16-.25a6.46 6.46 0 0 1 5.51-9.95 6.46 6.46 0 0 1 6.45 6.45 6.47 6.47 0 0 1-6.45 6.45zm3.55-4.85c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.44.1s-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.58-.98 5.97 5.97 0 0 1-1.1-1.36c-.12-.2 0-.3.09-.4.09-.09.2-.23.3-.34.1-.12.13-.2.2-.33.06-.13.03-.24-.02-.34s-.44-1.06-.6-1.45c-.16-.38-.32-.33-.44-.34l-.37-.01a.72.72 0 0 0-.52.24c-.18.2-.68.66-.68 1.62s.7 1.88.79 2.01c.1.13 1.36 2.08 3.3 2.92.46.2.82.32 1.1.4.46.15.88.13 1.21.08.37-.05 1.17-.48 1.33-.94.17-.46.17-.85.12-.94-.05-.08-.18-.13-.38-.23z" fill="currentColor"/></svg>
+        Solicitar pelo WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <div style="margin-top:48px;">
+    <div style="font-size:17px;font-weight:600;margin-bottom:16px;text-align:center;">Exemplos de empréstimo</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tipo</th><th>Valor</th><th>Parcelas</th><th>Taxa</th><th>Parcela</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pessoal</td><td>R$ 5.000</td><td>24x</td><td>1,99%</td><td>R$ 264,15</td><td>R$ 6.339,60</td></tr>
+          <tr><td>Pessoal</td><td>R$ 15.000</td><td>36x</td><td>1,79%</td><td>R$ 565,42</td><td>R$ 20.355,12</td></tr>
+          <tr><td>Empresarial</td><td>R$ 50.000</td><td>48x</td><td>1,29%</td><td>R$ 1.382,71</td><td>R$ 66.370,08</td></tr>
+          <tr><td>Empresarial</td><td>R$ 100.000</td><td>60x</td><td>0,99%</td><td>R$ 2.220,44</td><td>R$ 133.226,40</td></tr>
+          <tr><td>Consignado</td><td>R$ 10.000</td><td>36x</td><td>1,49%</td><td>R$ 357,42</td><td>R$ 12.867,12</td></tr>
+          <tr><td>Consignado</td><td>R$ 25.000</td><td>72x</td><td>1,29%</td><td>R$ 558,18</td><td>R$ 40.188,96</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="cta-bar">
+  <h3>Crédito com a VUON</h3>
+  <p>Nossa equipe analisa seu perfil em minutos e te apresenta a melhor proposta. Sem filas, sem papelada.</p>
+  <a class="btn btn-wa" href="https://wa.me/5511999999999?text=Olá!%20Quero%20uma%20análise%20de%20crédito" target="_blank">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17.6 6.32A7.85 7.85 0 0 0 12 4a7.94 7.94 0 0 0-6.88 12.15l-1.1 4.01 4.1-1.08A7.93 7.93 0 0 0 20 12a7.85 7.85 0 0 0-2.4-5.68zM12 18.5a6.46 6.46 0 0 1-3.3-.91l-.24-.14-2.47.65.66-2.4-.16-.25a6.46 6.46 0 0 1 5.51-9.95 6.46 6.46 0 0 1 6.45 6.45 6.47 6.47 0 0 1-6.45 6.45zm3.55-4.85c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.44.1s-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.58-.98 5.97 5.97 0 0 1-1.1-1.36c-.12-.2 0-.3.09-.4.09-.09.2-.23.3-.34.1-.12.13-.2.2-.33.06-.13.03-.24-.02-.34s-.44-1.06-.6-1.45c-.16-.38-.32-.33-.44-.34l-.37-.01a.72.72 0 0 0-.52.24c-.18.2-.68.66-.68 1.62s.7 1.88.79 2.01c.1.13 1.36 2.08 3.3 2.92.46.2.82.32 1.1.4.46.15.88.13 1.21.08.37-.05 1.17-.48 1.33-.94.17-.46.17-.85.12-.94-.05-.08-.18-.13-.38-.23z" fill="currentColor"/></svg>
+    Quero minha proposta
+  </a>
+</div>
+
+<div class="section" id="vantagens">
+  <div class="section-title">Por que escolher a VUON?</div>
+  <div class="section-sub">Transparência e agilidade em cada etapa do seu empréstimo</div>
+  <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+    <div class="feature">
+      <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19.3027 5.9053C19.6542 5.55397 20.2247 5.55388 20.5761 5.9053C20.9273 6.25675 20.9273 6.82734 20.5761 7.17874L9.65911 18.0948C9.30773 18.4461 8.73814 18.446 8.38665 18.0948L3.42376 13.1328C3.0726 12.7814 3.07263 12.2118 3.42376 11.8604C3.77524 11.509 4.34575 11.5089 4.6972 11.8604L9.02239 16.1856L19.3027 5.9053Z" fill="currentColor"/></svg></div>
+      <div><h4>Aprovação rápida</h4><p>Resposta em até 5 minutos após o envio da documentação.</p></div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M17 3.8H7C5.78497 3.8 4.8 4.78497 4.8 6V15.7647C4.8 16.574 5.24438 17.318 5.95698 17.7017L10.957 20.394C11.6081 20.7446 12.3919 20.7446 13.043 20.394L18.043 17.7017C18.7556 17.318 19.2 16.574 19.2 15.7647V6C19.2 4.78497 18.215 3.8 17 3.8ZM7 2C4.79086 2 3 3.79086 3 6V15.7647C3 17.2362 3.80796 18.5889 5.1036 19.2866L10.1036 21.9789C11.2875 22.6164 12.7125 22.6164 13.8964 21.9789L18.8964 19.2866C20.192 18.5889 21 17.2362 21 15.7647V6C21 3.79086 19.2091 2 17 2H7Z" fill="currentColor"/></svg></div>
+      <div><h4>100% Seguro</h4><p>Seus dados são criptografados e protegidos por certificado SSL.</p></div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2.1001C17.4676 2.10031 21.8994 6.53286 21.8994 12.0005C21.8992 17.4679 17.4674 21.8997 12 21.8999C6.53237 21.8999 2.09982 17.4681 2.09961 12.0005C2.09961 6.53273 6.53224 2.1001 12 2.1001ZM12 3.8999C7.52636 3.8999 3.89941 7.52684 3.89941 12.0005C3.89963 16.474 7.52649 20.1001 12 20.1001C16.4733 20.0999 20.0994 16.4738 20.0996 12.0005C20.0996 7.52697 16.4735 3.90011 12 3.8999ZM12 9.50049C12.4971 9.50049 12.9 9.90344 12.9 10.4005V16.4005C12.9 16.8975 12.4971 17.3005 12 17.3005C11.503 17.3005 11.1 16.8975 11.1 16.4005V10.4005C11.1 9.90344 11.503 9.50049 12 9.50049ZM12 7.1001C12.4971 7.1001 12.9 7.50305 12.9 8.0001C12.9 8.49714 12.4971 8.9001 12 8.9001C11.503 8.9001 11.1 8.49714 11.1 8.0001C11.1 7.50305 11.503 7.1001 12 7.1001Z" fill="currentColor"/></svg></div>
+      <div><h4>Sem surpresas</h4><p>CET transparente. Você sabe exatamente quanto vai pagar antes de contratar.</p></div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 3.33203C4.55224 3.33203 4.99993 3.7798 5 4.33203V18.0908H20.0674C20.6195 18.0908 21.0671 18.5388 21.0674 19.0908C21.0674 19.6431 20.6197 20.0908 20.0674 20.0908H5C3.89543 20.0908 3 19.1954 3 18.0908V4.33203C3.00007 3.7798 3.44776 3.33203 4 3.33203ZM8.19922 9.28418C8.7515 9.28418 9.19922 9.73189 9.19922 10.2842V15.6045C9.19908 16.1567 8.75142 16.6045 8.19922 16.6045C7.64719 16.6043 7.19936 16.1566 7.19922 15.6045V10.2842C7.19922 9.73189 7.64694 9.28418 8.19922 9.28418ZM12.3994 12.4863C12.396 10.8789 14.2659 9.99419 15.5068 11.0156L21.3887 15.8594C22.6251 16.8787 22.1145 18.8522 20.5918 19.1816L20.4404 19.207L17.6953 19.5889C17.6853 19.5903 17.675 19.5934 17.666 19.5977L17.6416 19.6143L15.6055 21.4961L15.4902 21.5957C14.3092 22.5333 12.5401 21.7604 12.4238 20.2568L12.417 20.1045L12.3994 12.4863ZM14.2568 12.3916C14.2298 12.4044 14.2145 12.4205 14.209 12.4287L14.2002 12.4863L14.2178 20.1045C14.2196 20.1547 14.237 20.2014 14.2676 20.2383L14.3037 20.2715C14.3486 20.3027 14.4023 20.3145 14.4541 20.3047L14.5068 20.2832L16.543 18.4014L16.5674 18.3848C16.5764 18.3805 16.5867 18.3774 16.5967 18.376L16.6211 18.3594L19.3662 17.9775C19.416 17.9707 19.4629 17.9473 19.498 17.9102L19.5332 17.8652C19.5645 17.8203 19.5762 17.7666 19.5664 17.7148L19.5449 17.6621L13.6631 12.8184C13.624 12.7852 13.5752 12.7656 13.5244 12.7617L13.4678 12.7676C13.4131 12.7793 13.3643 12.8105 13.3301 12.8555L13.2959 12.9102L13.2568 12.9473L14.2568 12.3916Z" fill="currentColor"/></svg></div>
+      <div><h4>Taxas competitivas</h4><p>Negociamos com mais de 20 instituições para garantir a melhor taxa para você.</p></div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M11.9997 12.8779C16.0197 12.878 19.4393 15.3848 20.7048 18.8828C21.0812 19.9234 20.2782 20.8962 19.2038 21.0137L18.9861 21.0264H5.0134L4.79562 21.0137C3.7213 20.8961 2.91743 19.9233 3.29367 18.8828C4.55905 15.3847 7.9797 12.8781 11.9997 12.8779ZM11.9997 14.6777C8.84467 14.6779 6.17462 16.5794 5.09152 19.2256H18.9079C17.8248 16.5793 15.1549 14.6778 11.9997 14.6777Z" fill="currentColor"/></svg></div>
+      <div><h4>Atendimento humano</h4><p>Especialistas disponíveis no WhatsApp para tirar todas as suas dúvidas.</p></div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15.4795 15.4971C15.9765 15.4971 16.3799 15.9004 16.3799 16.3975C16.3799 16.8945 15.9765 17.2978 15.4795 17.2979H8.52051C8.02345 17.2979 7.62012 16.8945 7.62012 16.3975C7.62012 15.9004 8.02345 15.4971 8.52051 15.4971H15.4795Z" fill="currentColor"/><path d="M12.3359 11.0996C12.8329 11.0997 13.2354 11.503 13.2354 12C13.2354 12.497 12.8329 12.9003 12.3359 12.9004H8.52051C8.02345 12.9004 7.62012 12.497 7.62012 12C7.62012 11.503 8.02345 11.0996 8.52051 11.0996H12.3359Z" fill="currentColor"/><path d="M15.4795 6.70215C15.9765 6.70215 16.3799 7.10547 16.3799 7.60254C16.3799 8.0996 15.9765 8.50293 15.4795 8.50293H8.52051C8.02345 8.50293 7.62012 8.0996 7.62012 7.60254C7.62012 7.10547 8.02345 6.70215 8.52051 6.70215H15.4795Z" fill="currentColor"/></svg></div>
+      <div><h4>Documentação simples</h4><p>RG, CPF e comprovante de renda. Nada além disso para a maioria dos casos.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">O que nossos clientes dizem</div>
+  <div class="section-sub">Mais de 10 mil pessoas já realizaram seus sonhos com a gente</div>
+  <div class="grid">
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Consegui quitar minhas dívidas com um empréstimo pessoal de R$ 15 mil. A parcela cabe direitinho no orçamento e o atendimento pelo WhatsApp foi impecável."</div>
+      <div class="testi-author">Mariana Souza</div>
+      <div class="testi-role">São Paulo, SP — Empréstimo Pessoal</div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Usei o crédito empresarial para comprar novos equipamentos para minha padaria. Em 24h o dinheiro estava na conta. Recomendo demais!"</div>
+      <div class="testi-author">Carlos Eduardo Lima</div>
+      <div class="testi-role">Belo Horizonte, MG — Empréstimo Empresarial</div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Sou aposentado e achava difícil conseguir crédito. A VUON me deu condições excelentes no consignado, com parcela que não comprometeu meu benefício."</div>
+      <div class="testi-author">José Antônio Pereira</div>
+      <div class="testi-role">Rio de Janeiro, RJ — Consignado</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="faq">
+  <div class="section-title">Perguntas frequentes</div>
+  <div class="section-sub">Tire suas dúvidas sobre nossos empréstimos</div>
+  <div style="max-width:640px;margin:0 auto;">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Quais documentos preciso para solicitar?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 21.6387C11.7378 21.988 12.3059 21.987 12.6565 21.6364L18.1949 16.098C18.5464 15.7465 18.5464 15.1766 18.1949 14.8252C17.8434 14.4737 17.2736 14.4737 16.9221 14.8252L12.9201 18.8272V3.00002C12.9201 2.50297 12.5171 2.10003 12.0201 2.10003C11.523 2.10003 11.1201 2.50297 11.1201 3.00002V18.8383L7.07554 14.8229C6.7228 14.4727 6.15295 14.4747 5.80275 14.8275C5.45255 15.1802 5.45457 15.7501 5.80731 16.1003L11.386 21.6387Z" fill="currentColor"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Para pessoa física: RG, CPF e comprovante de renda dos últimos 3 meses. Para empresas: CNPJ, contrato social e demonstrativos de faturamento. Aposentados precisam também do extrato do benefício INSS.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Quanto tempo leva para receber o dinheiro?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 21.6387C11.7378 21.988 12.3059 21.987 12.6565 21.6364L18.1949 16.098C18.5464 15.7465 18.5464 15.1766 18.1949 14.8252C17.8434 14.4737 17.2736 14.4737 16.9221 14.8252L12.9201 18.8272V3.00002C12.9201 2.50297 12.5171 2.10003 12.0201 2.10003C11.523 2.10003 11.1201 2.50297 11.1201 3.00002V18.8383L7.07554 14.8229C6.7228 14.4727 6.15295 14.4747 5.80275 14.8275C5.45255 15.1802 5.45457 15.7501 5.80731 16.1003L11.386 21.6387Z" fill="currentColor"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Após a aprovação, o dinheiro cai na sua conta em até 24 horas úteis. Em casos de empréstimo consignado, o prazo pode ser de até 48 horas devido à conferência com o INSS.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Posso pagar o empréstimo antecipadamente?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 21.6387C11.7378 21.988 12.3059 21.987 12.6565 21.6364L18.1949 16.098C18.5464 15.7465 18.5464 15.1766 18.1949 14.8252C17.8434 14.4737 17.2736 14.4737 16.9221 14.8252L12.9201 18.8272V3.00002C12.9201 2.50297 12.5171 2.10003 12.0201 2.10003C11.523 2.10003 11.1201 2.50297 11.1201 3.00002V18.8383L7.07554 14.8229C6.7228 14.4727 6.15295 14.4747 5.80275 14.8275C5.45255 15.1802 5.45457 15.7501 5.80731 16.1003L11.386 21.6387Z" fill="currentColor"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Sim! Você pode quitar seu empréstimo a qualquer momento. O valor residual é recalculado com base no saldo devedor e você paga apenas os juros proporcionais ao período em que usou o crédito.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Qual a taxa de juros real (CET)?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 21.6387C11.7378 21.988 12.3059 21.987 12.6565 21.6364L18.1949 16.098C18.5464 15.7465 18.5464 15.1766 18.1949 14.8252C17.8434 14.4737 17.2736 14.4737 16.9221 14.8252L12.9201 18.8272V3.00002C12.9201 2.50297 12.5171 2.10003 12.0201 2.10003C11.523 2.10003 11.1201 2.50297 11.1201 3.00002V18.8383L7.07554 14.8229C6.7228 14.4727 6.15295 14.4747 5.80275 14.8275C5.45255 15.1802 5.45457 15.7501 5.80731 16.1003L11.386 21.6387Z" fill="currentColor"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">A CET varia conforme o perfil do cliente e a instituição financiadora. As taxas apresentadas no simulador são referenciais. A taxa final será apresentada na proposta formal após análise de crédito.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Preciso ter conta em qual banco?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 21.6387C11.7378 21.988 12.3059 21.987 12.6565 21.6364L18.1949 16.098C18.5464 15.7465 18.5464 15.1766 18.1949 14.8252C17.8434 14.4737 17.2736 14.4737 16.9221 14.8252L12.9201 18.8272V3.00002C12.9201 2.50297 12.5171 2.10003 12.0201 2.10003C11.523 2.10003 11.1201 2.50297 11.1201 3.00002V18.8383L7.07554 14.8229C6.7228 14.4727 6.15295 14.4747 5.80275 14.8275C5.45255 15.1802 5.45457 15.7501 5.80731 16.1003L11.386 21.6387Z" fill="currentColor"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Não precisa ter conta em banco específico. Trabalhamos com transferência via TED para qualquer instituição bancária do Brasil.</div></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Meus dados estão protegidos?
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.386 21.6387C11.7378 21.988 12.3059 21.987 12.6565 21.6364L18.1949 16.098C18.5464 15.7465 18.5464 15.1766 18.1949 14.8252C17.8434 14.4737 17.2736 14.4737 16.9221 14.8252L12.9201 18.8272V3.00002C12.9201 2.50297 12.5171 2.10003 12.0201 2.10003C11.523 2.10003 11.1201 2.50297 11.1201 3.00002V18.8383L7.07554 14.8229C6.7228 14.4727 6.15295 14.4747 5.80275 14.8275C5.45255 15.1802 5.45457 15.7501 5.80731 16.1003L11.386 21.6387Z" fill="currentColor"/></svg>
+      </div>
+      <div class="faq-a"><div class="faq-a-inner">Sim. Utilizamos criptografia SSL em todas as páginas e seus dados são tratados conforme a LGPD. Nunca vendemos ou compartilhamos seus dados com terceiros sem autorização.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-links">
+    <a onclick="openModal('privacy')">Política de Privacidade</a>
+    <a onclick="openModal('terms')">Termos de Uso</a>
+  </div>
+  <div class="footer-copy">© 2026 VUON SOCIEDADE DE CRÉDITO DIRETO S.A. Todos os direitos reservados.</div>
+  <div style="margin-top:12px;font-size:12px;color:var(--text-tertiary);line-height:1.6;">
+    <strong>VUON SOCIEDADE DE CRÉDITO DIRETO S.A.</strong> — CNPJ 57.523.215/0001-04<br>
+    Endereço: Rua Tabapuã, 841 — ANDAR 6 SALA 617<br>
+    Itaim Bibi<br>
+    SÃO PAULO — SP<br>
+    CEP: 04533-013<br>
+    Brasil
+  </div>
+</div>
+
+<div class="float-wa">
+  <a href="https://wa.me/5511999999999?text=Olá!%20Quero%20solicitar%20um%20empréstimo" target="_blank">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17.6 6.32A7.85 7.85 0 0 0 12 4a7.94 7.94 0 0 0-6.88 12.15l-1.1 4.01 4.1-1.08A7.93 7.93 0 0 0 20 12a7.85 7.85 0 0 0-2.4-5.68zM12 18.5a6.46 6.46 0 0 1-3.3-.91l-.24-.14-2.47.65.66-2.4-.16-.25a6.46 6.46 0 0 1 5.51-9.95 6.46 6.46 0 0 1 6.45 6.45 6.47 6.47 0 0 1-6.45 6.45zm3.55-4.85c-.2-.1-1.17-.58-1.35-.64-.18-.07-.31-.1-.44.1s-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.58-.98 5.97 5.97 0 0 1-1.1-1.36c-.12-.2 0-.3.09-.4.09-.09.2-.23.3-.34.1-.12.13-.2.2-.33.06-.13.03-.24-.02-.34s-.44-1.06-.6-1.45c-.16-.38-.32-.33-.44-.34l-.37-.01a.72.72 0 0 0-.52.24c-.18.2-.68.66-.68 1.62s.7 1.88.79 2.01c.1.13 1.36 2.08 3.3 2.92.46.2.82.32 1.1.4.46.15.88.13 1.21.08.37-.05 1.17-.48 1.33-.94.17-.46.17-.85.12-.94-.05-.08-.18-.13-.38-.23z" fill="currentColor"/></svg>
+    <span>Falar no WhatsApp</span>
+  </a>
+</div>
+
+<!-- Modal Política de Privacidade -->
+<div class="modal-overlay" id="modal-privacy" onclick="closeModal(event, 'privacy')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModalDirect('privacy')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17.9542 4.77253C18.3056 4.42106 18.8761 4.42106 19.2276 4.77253C19.579 5.12401 19.579 5.69452 19.2276 6.04597L13.2735 12.0001L19.2276 17.9542C19.5791 18.3056 19.5791 18.8761 19.2276 19.2276C18.8761 19.5791 18.3056 19.5791 17.9542 19.2276L12.0001 13.2735L6.04595 19.2276C5.69451 19.5791 5.12399 19.579 4.77252 19.2276C4.42104 18.8761 4.42104 18.3056 4.77252 17.9542L10.7266 12.0001L4.77252 6.04595C4.42104 5.69451 4.42104 5.12399 4.77252 4.77252C5.12399 4.42104 5.69451 4.42104 6.04595 4.77252L12.0001 10.7266L17.9542 4.77253Z" fill="currentColor"/></svg>
+    </button>
+    <h2>Política de Privacidade</h2>
+    <p><strong>Última atualização:</strong> 13 de agosto de 2026</p>
+    <h3>1. Coleta de informações</h3>
+    <p>Coletamos informações pessoais que você nos fornece diretamente, como nome, CPF, endereço, renda e dados bancários, quando preenche formulários ou solicita um empréstimo. Também coletamos dados automaticamente, como endereço IP, tipo de navegador e páginas visitadas.</p>
+    <h3>2. Uso das informações</h3>
+    <p>Utilizamos seus dados para:</p>
+    <ul>
+      <li>Processar e analisar solicitações de empréstimo;</li>
+      <li>Entrar em contato sobre propostas e documentação;</li>
+      <li>Cumprir obrigações legais e regulatórias;</li>
+      <li>Melhorar nossos serviços e experiência do usuário.</li>
+    </ul>
+    <h3>3. Compartilhamento de dados</h3>
+    <p>Seus dados podem ser compartilhados com instituições financeiras parceiras para análise de crédito e formalização do contrato. Não vendemos seus dados a terceiros para fins de marketing.</p>
+    <h3>4. Segurança</h3>
+    <p>Adotamos medidas técnicas e administrativas para proteger seus dados contra acesso não autorizado, alteração, divulgação ou destruição. Utilizamos criptografia SSL em todas as transmissões de dados sensíveis.</p>
+    <h3>5. Seus direitos</h3>
+    <p>De acordo com a LGPD, você tem direito a acessar, corrigir, excluir ou portar seus dados pessoais. Para exercer esses direitos, entre em contato pelo WhatsApp ou e-mail.</p>
+    <h3>6. Cookies</h3>
+    <p>Utilizamos cookies para melhorar a navegação, personalizar conteúdo e analisar tráfego. Você pode desativar cookies nas configurações do seu navegador.</p>
+    <h3>7. Alterações</h3>
+    <p>Podemos atualizar esta política periodicamente. Recomendamos que você a revise regularmente. Alterações significativas serão comunicadas por e-mail ou aviso no site.</p>
+    <h3>8. Contato</h3>
+    <p>Dúvidas sobre esta política? Fale conosco pelo WhatsApp (11) 99999-9999 ou pelo e-mail privacidade@vuon.com.br.</p>
+  </div>
+</div>
+
+<!-- Modal Termos de Uso -->
+<div class="modal-overlay" id="modal-terms" onclick="closeModal(event, 'terms')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModalDirect('terms')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17.9542 4.77253C18.3056 4.42106 18.8761 4.42106 19.2276 4.77253C19.579 5.12401 19.579 5.69452 19.2276 6.04597L13.2735 12.0001L19.2276 17.9542C19.5791 18.3056 19.5791 18.8761 19.2276 19.2276C18.8761 19.5791 18.3056 19.5791 17.9542 19.2276L12.0001 13.2735L6.04595 19.2276C5.69451 19.5791 5.12399 19.579 4.77252 19.2276C4.42104 18.8761 4.42104 18.3056 4.77252 17.9542L10.7266 12.0001L4.77252 6.04595C4.42104 5.69451 4.42104 5.12399 4.77252 4.77252C5.12399 4.42104 5.69451 4.42104 6.04595 4.77252L12.0001 10.7266L17.9542 4.77253Z" fill="currentColor"/></svg>
+    </button>
+    <h2>Termos de Uso</h2>
+    <p><strong>Última atualização:</strong> 13 de agosto de 2026</p>
+    <h3>1. Aceitação dos termos</h3>
+    <p>Ao acessar e utilizar este site, você concorda em cumprir estes Termos de Uso e todas as leis e regulamentos aplicáveis. Se não concordar com qualquer parte destes termos, não utilize nossos serviços.</p>
+    <h3>2. Serviços oferecidos</h3>
+    <p>A VUON SOCIEDADE DE CRÉDITO DIRETO S.A. é uma instituição financeira autorizada pelo Banco Central do Brasil, atuando no mercado de crédito direto.</p>
+    <h3>3. Elegibilidade</h3>
+    <p>Para solicitar um empréstimo, você deve ser maior de 18 anos, residente no Brasil e possuir renda comprovada. A aprovação final depende da análise de crédito da instituição financiadora.</p>
+    <h3>4. Taxas e custos</h3>
+    <p>As taxas de juros apresentadas no site são referenciais e podem variar conforme o perfil do cliente. O CET (Custo Efetivo Total) será informado na proposta formal antes da contratação. Não cobramos taxa de adesão ou consulta prévia.</p>
+    <h3>5. Responsabilidades do usuário</h3>
+    <p>Você se compromete a fornecer informações verdadeiras, atualizadas e completas. O fornecimento de dados falsos pode caracterizar crime de falsidade ideológica e resultar na recusa do crédito.</p>
+    <h3>6. Propriedade intelectual</h3>
+    <p>Todo o conteúdo deste site (textos, imagens, logotipos, código) é de propriedade da VUON SOCIEDADE DE CRÉDITO DIRETO S.A. ou de seus licenciadores e está protegido por leis de direitos autorais.</p>
+    <h3>7. Limitação de responsabilidade</h3>
+    <p>A VUON SOCIEDADE DE CRÉDITO DIRETO S.A. atua de acordo com as normas do Banco Central do Brasil. A aprovação de crédito está sujeita à análise de risco e políticas internas. Também não nos responsabilizamos por atrasos na liberação de recursos decorrentes de falhas bancárias.</p>
+    <h3>8. Alterações nos termos</h3>
+    <p>Podemos modificar estes termos a qualquer momento. O uso continuado do site após alterações constitui aceitação dos novos termos.</p>
+    <h3>9. Legislação aplicável</h3>
+    <p>Estes termos são regidos pelas leis da República Federativa do Brasil. Quaisquer disputas serão resolvidas no foro da comarca de São Paulo, SP.</p>
+    <h3>10. Contato</h3>
+    <p>Para dúvidas sobre estes termos, entre em contato pelo WhatsApp (11) 99999-9999.</p>
+  </div>
+</div>
 
 <script>
-var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this.parsedData=[];for(var b=[],d=0,e=this.data.length;e>d;d++){var f=this.data.charCodeAt(d);f>65536?(b[0]=240|(1835008&f)>>>18,b[1]=128|(258048&f)>>>12,b[2]=128|(4032&f)>>>6,b[3]=128|63&f):f>2048?(b[0]=224|(61440&f)>>>12,b[1]=128|(4032&f)>>>6,b[2]=128|63&f):f>128?(b[0]=192|(1984&f)>>>6,b[1]=128|63&f):b[0]=f,this.parsedData=this.parsedData.concat(b)}this.parsedData.length!=this.data.length&&(this.parsedData.unshift(191),this.parsedData.unshift(187),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function i(a,b){if(void 0==a.length)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[d+c]}function j(a,b){this.totalCount=a,this.dataCount=b}function k(){this.buffer=[],this.length=0}function m(){return"undefined"!=typeof CanvasRenderingContext2D}function n(){var a=!1,b=navigator.userAgent;return/android/i.test(b)&&(a=!0,aMat=b.toString().match(/android ([0-9]\.[0-9])/i),aMat&&aMat[1]&&(a=parseFloat(aMat[1]))),a}function r(a,b){for(var c=1,e=s(a),f=0,g=l.length;g>=f;f++){var h=0;switch(b){case d.L:h=l[f][0];break;case d.M:h=l[f][1];break;case d.Q:h=l[f][2];break;case d.H:h=l[f][3]}if(h>=e)break;c++}if(c>l.length)throw new Error("Too long data");return c}function s(a){var b=encodeURI(a).toString().replace(/\%[0-9a-fA-F]{2}/g,"a");return b.length+(b.length!=a?3:0)}a.prototype={getLength:function(){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;c>b;b++)a.put(this.parsedData[b],8)}},b.prototype={addData:function(b){var c=new a(b);this.dataList.push(c),this.dataCache=null},isDark:function(a,b){if(0>a||this.moduleCount<=a||0>b||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b]},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=null}this.setupPositionProbePattern(0,0),this.setupPositionProbePattern(this.moduleCount-7,0),this.setupPositionProbePattern(0,this.moduleCount-7),this.setupPositionAdjustPattern(),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b){for(var c=-1;7>=c;c++)if(!(-1>=a+c||this.moduleCount<=a+c))for(var d=-1;7>=d;d++)-1>=b+d||this.moduleCount<=b+d||(this.modules[a+c][b+d]=c>=0&&6>=c&&(0==d||6==d)||d>=0&&6>=d&&(0==c||6==c)||c>=2&&4>=c&&d>=2&&4>=d?!0:!1)},getBestMaskPattern:function(){for(var a=0,b=0,c=0;8>c;c++){this.makeImpl(!0,c);var d=f.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},createMovieClip:function(a,b,c){var d=a.createEmptyMovieClip(b,c),e=1;this.make();for(var f=0;f<this.modules.length;f++)for(var g=f*e,h=0;h<this.modules[f].length;h++){var i=h*e,j=this.modules[f][h];j&&(d.beginFill(0,100),d.moveTo(i,g),d.lineTo(i+e,g),d.lineTo(i+e,g+e),d.lineTo(i,g+e),d.endFill())}return d},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6]&&(this.modules[a][6]=0==a%2);for(var b=8;b<this.moduleCount-8;b++)null==this.modules[6][b]&&(this.modules[6][b]=0==b%2)},setupPositionAdjustPattern:function(){for(var a=f.getPatternPosition(this.typeNumber),b=0;b<a.length;b++)for(var c=0;c<a.length;c++){var d=a[b],e=a[c];if(null==this.modules[d][e])for(var g=-2;2>=g;g++)for(var h=-2;2>=h;h++)this.modules[d+g][e+h]=-2==g||2==g||-2==h||2==h||0==g&&0==h?!0:!1}},setupTypeNumber:function(a){for(var b=f.getBCHTypeNumber(this.typeNumber),c=0;18>c;c++){var d=!a&&1==(1&b>>c);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3]=d}for(var c=0;18>c;c++){var d=!a&&1==(1&b>>c);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=f.getBCHTypeInfo(c),e=0;15>e;e++){var g=!a&&1==(1&d>>e);6>e?this.modules[e][8]=g:8>e?this.modules[e+1][8]=g:this.modules[this.moduleCount-15+e][8]=g}for(var e=0;15>e;e++){var g=!a&&1==(1&d>>e);8>e?this.modules[8][this.moduleCount-e-1]=g:9>e?this.modules[8][15-e-1+1]=g:this.modules[8][15-e-1]=g}this.modules[this.moduleCount-8][8]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,g=0,h=this.moduleCount-1;h>0;h-=2)for(6==h&&h--;;){for(var i=0;2>i;i++)if(null==this.modules[d][h-i]){var j=!1;g<a.length&&(j=1==(1&a[g]>>>e));var k=f.getMask(b,d,h-i);k&&(j=!j),this.modules[d][h-i]=j,e--,-1==e&&(g++,e=7)}if(d+=c,0>d||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,d){for(var e=j.getRSBlocks(a,c),g=new k,h=0;h<d.length;h++){var i=d[h];g.put(i.mode,4),g.put(i.getLength(),f.getLengthInBits(i.mode,a)),i.write(g)}for(var l=0,h=0;h<e.length;h++)l+=e[h].dataCount;if(g.getLengthInBits()>8*l)throw new Error("code length overflow. ("+g.getLengthInBits()+">"+8*l+")");for(g.getLengthInBits()+4<=8*l&&g.put(0,4);0!=g.getLengthInBits()%8;)g.putBit(!1);for(;;){if(g.getLengthInBits()>=8*l)break;if(g.put(b.PAD0,8),g.getLengthInBits()>=8*l)break;g.put(b.PAD1,8)}return b.createBytes(g,e)},b.createBytes=function(a,b){for(var c=0,d=0,e=0,g=new Array(b.length),h=new Array(b.length),j=0;j<b.length;j++){var k=b[j].dataCount,l=b[j].totalCount-k;d=Math.max(d,k),e=Math.max(e,l),g[j]=new Array(k);for(var m=0;m<g[j].length;m++)g[j][m]=255&a.buffer[m+c];c+=k;var n=f.getErrorCorrectPolynomial(l),o=new i(g[j],n.getLength()-1),p=o.mod(n);h[j]=new Array(n.getLength()-1);for(var m=0;m<h[j].length;m++){var q=m+p.getLength()-h[j].length;h[j][m]=q>=0?p.get(q):0}}for(var r=0,m=0;m<b.length;m++)r+=b[m].totalCount;for(var s=new Array(r),t=0,m=0;d>m;m++)for(var j=0;j<b.length;j++)m<g[j].length&&(s[t++]=g[j][m]);for(var m=0;e>m;m++)for(var j=0;j<b.length;j++)m<h[j].length&&(s[t++]=h[j][m]);return s};for(var c={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},d={L:1,M:0,Q:3,H:2},e={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},f={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(a){for(var b=a<<10;f.getBCHDigit(b)-f.getBCHDigit(f.G15)>=0;)b^=f.G15<<f.getBCHDigit(b)-f.getBCHDigit(f.G15);return(a<<10|b)^f.G15_MASK},getBCHTypeNumber:function(a){for(var b=a<<12;f.getBCHDigit(b)-f.getBCHDigit(f.G18)>=0;)b^=f.G18<<f.getBCHDigit(b)-f.getBCHDigit(f.G18);return a<<12|b},getBCHDigit:function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},getPatternPosition:function(a){return f.PATTERN_POSITION_TABLE[a-1]},getMask:function(a,b,c){switch(a){case e.PATTERN000:return 0==(b+c)%2;case e.PATTERN001:return 0==b%2;case e.PATTERN010:return 0==c%3;case e.PATTERN011:return 0==(b+c)%3;case e.PATTERN100:return 0==(Math.floor(b/2)+Math.floor(c/3))%2;case e.PATTERN101:return 0==b*c%2+b*c%3;case e.PATTERN110:return 0==(b*c%2+b*c%3)%2;case e.PATTERN111:return 0==(b*c%3+(b+c)%2)%2;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new i([1],0),c=0;a>c;c++)b=b.multiply(new i([1,g.gexp(c)],0));return b},getLengthInBits:function(a,b){if(b>=1&&10>b)switch(a){case c.MODE_NUMBER:return 10;case c.MODE_ALPHA_NUM:return 9;case c.MODE_8BIT_BYTE:return 8;case c.MODE_KANJI:return 8;default:throw new Error("mode:"+a)}else if(27>b)switch(a){case c.MODE_NUMBER:return 12;case c.MODE_ALPHA_NUM:return 11;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 10;default:throw new Error("mode:"+a)}else{if(!(41>b))throw new Error("type:"+b);switch(a){case c.MODE_NUMBER:return 14;case c.MODE_ALPHA_NUM:return 13;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 12;default:throw new Error("mode:"+a)}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;b>d;d++)for(var e=0;b>e;e++){for(var f=0,g=a.isDark(d,e),h=-1;1>=h;h++)if(!(0>d+h||d+h>=b))for(var i=-1;1>=i;i++)0>e+i||e+i>=b||(0!=h||0!=i)&&g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;b-1>d;d++)for(var e=0;b-1>e;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,(0==j||4==j)&&(c+=3)}for(var d=0;b>d;d++)for(var e=0;b-6>e;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;b>e;e++)for(var d=0;b-6>d;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;b>e;e++)for(var d=0;b>d;d++)a.isDark(d,e)&&k++;var l=Math.abs(100*k/b/b-50)/5;return c+=10*l}},g={glog:function(a){if(1>a)throw new Error("glog("+a+")");return g.LOG_TABLE[a]},gexp:function(a){for(;0>a;)a+=255;for(;a>=256;)a-=255;return g.EXP_TABLE[a]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)},h=0;8>h;h++)g.EXP_TABLE[h]=1<<h;for(var h=8;256>h;h++)g.EXP_TABLE[h]=g.EXP_TABLE[h-4]^g.EXP_TABLE[h-5]^g.EXP_TABLE[h-6]^g.EXP_TABLE[h-8];for(var h=0;255>h;h++)g.LOG_TABLE[g.EXP_TABLE[h]]=h;i.prototype={get:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),c=0;c<this.getLength();c++)for(var d=0;d<a.getLength();d++)b[c+d]^=g.gexp(g.glog(this.get(c))+g.glog(a.get(d)));return new i(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=g.glog(this.get(0))-g.glog(a.get(0)),c=new Array(this.getLength()),d=0;d<this.getLength();d++)c[d]=this.get(d);for(var d=0;d<a.getLength();d++)c[d]^=g.gexp(g.glog(a.get(d))+b);return new i(c,0).mod(a)}},j.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],j.getRSBlocks=function(a,b){var c=j.getRsBlockTable(a,b);if(void 0==c)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var d=c.length/3,e=[],f=0;d>f;f++)for(var g=c[3*f+0],h=c[3*f+1],i=c[3*f+2],k=0;g>k;k++)e.push(new j(h,i));return e},j.getRsBlockTable=function(a,b){switch(b){case d.L:return j.RS_BLOCK_TABLE[4*(a-1)+0];case d.M:return j.RS_BLOCK_TABLE[4*(a-1)+1];case d.Q:return j.RS_BLOCK_TABLE[4*(a-1)+2];case d.H:return j.RS_BLOCK_TABLE[4*(a-1)+3];default:return void 0}},k.prototype={get:function(a){var b=Math.floor(a/8);return 1==(1&this.buffer[b]>>>7-a%8)},put:function(a,b){for(var c=0;b>c;c++)this.putBit(1==(1&a>>>b-c-1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=128>>>this.length%8),this.length++}};var l=[[17,14,11,7],[32,26,20,14],[53,42,32,24],[78,62,46,34],[106,84,60,44],[134,106,74,58],[154,122,86,64],[192,152,108,84],[230,180,130,98],[271,213,151,119],[321,251,177,137],[367,287,203,155],[425,331,241,177],[458,362,258,194],[520,412,292,220],[586,450,322,250],[644,504,364,280],[718,560,394,310],[792,624,442,338],[858,666,482,382],[929,711,509,403],[1003,779,565,439],[1091,857,611,461],[1171,911,661,511],[1273,997,715,535],[1367,1059,751,593],[1465,1125,805,625],[1528,1190,868,658],[1628,1264,908,698],[1732,1370,982,742],[1840,1452,1030,790],[1952,1538,1112,842],[2068,1628,1168,898],[2188,1722,1228,958],[2303,1809,1283,983],[2431,1911,1351,1051],[2563,1989,1423,1093],[2699,2099,1499,1139],[2809,2213,1579,1219],[2953,2331,1663,1273]],o=function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){function g(a,b){var c=document.createElementNS("http://www.w3.org/2000/svg",a);for(var d in b)b.hasOwnProperty(d)&&c.setAttribute(d,b[d]);return c}var b=this._htOption,c=this._el,d=a.getModuleCount();Math.floor(b.width/d),Math.floor(b.height/d),this.clear();var h=g("svg",{viewBox:"0 0 "+String(d)+" "+String(d),width:"100%",height:"100%",fill:b.colorLight});h.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns:xlink","http://www.w3.org/1999/xlink"),c.appendChild(h),h.appendChild(g("rect",{fill:b.colorDark,width:"1",height:"1",id:"template"}));for(var i=0;d>i;i++)for(var j=0;d>j;j++)if(a.isDark(i,j)){var k=g("use",{x:String(i),y:String(j)});k.setAttributeNS("http://www.w3.org/1999/xlink","href","#template"),h.appendChild(k)}},a.prototype.clear=function(){for(;this._el.hasChildNodes();)this._el.removeChild(this._el.lastChild)},a}(),p="svg"===document.documentElement.tagName.toLowerCase(),q=p?o:m()?function(){function a(){this._elImage.src=this._elCanvas.toDataURL("image/png"),this._elImage.style.display="block",this._elCanvas.style.display="none"}function d(a,b){var c=this;if(c._fFail=b,c._fSuccess=a,null===c._bSupportDataURI){var d=document.createElement("img"),e=function(){c._bSupportDataURI=!1,c._fFail&&_fFail.call(c)},f=function(){c._bSupportDataURI=!0,c._fSuccess&&c._fSuccess.call(c)};return d.onabort=e,d.onerror=e,d.onload=f,d.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",void 0}c._bSupportDataURI===!0&&c._fSuccess?c._fSuccess.call(c):c._bSupportDataURI===!1&&c._fFail&&c._fFail.call(c)}if(this._android&&this._android<=2.1){var b=1/window.devicePixelRatio,c=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(a,d,e,f,g,h,i,j){if("nodeName"in a&&/img/i.test(a.nodeName))for(var l=arguments.length-1;l>=1;l--)arguments[l]=arguments[l]*b;else"undefined"==typeof j&&(arguments[1]*=b,arguments[2]*=b,arguments[3]*=b,arguments[4]*=b);c.apply(this,arguments)}}var e=function(a,b){this._bIsPainted=!1,this._android=n(),this._htOption=b,this._elCanvas=document.createElement("canvas"),this._elCanvas.width=b.width,this._elCanvas.height=b.height,a.appendChild(this._elCanvas),this._el=a,this._oContext=this._elCanvas.getContext("2d"),this._bIsPainted=!1,this._elImage=document.createElement("img"),this._elImage.style.display="none",this._el.appendChild(this._elImage),this._bSupportDataURI=null};return e.prototype.draw=function(a){var b=this._elImage,c=this._oContext,d=this._htOption,e=a.getModuleCount(),f=d.width/e,g=d.height/e,h=Math.round(f),i=Math.round(g);b.style.display="none",this.clear();for(var j=0;e>j;j++)for(var k=0;e>k;k++){var l=a.isDark(j,k),m=k*f,n=j*g;c.strokeStyle=l?d.colorDark:d.colorLight,c.lineWidth=1,c.fillStyle=l?d.colorDark:d.colorLight,c.fillRect(m,n,f,g),c.strokeRect(Math.floor(m)+.5,Math.floor(n)+.5,h,i),c.strokeRect(Math.ceil(m)-.5,Math.ceil(n)-.5,h,i)}this._bIsPainted=!0},e.prototype.makeImage=function(){this._bIsPainted&&d.call(this,a)},e.prototype.isPainted=function(){return this._bIsPainted},e.prototype.clear=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1},e.prototype.round=function(a){return a?Math.floor(1e3*a)/1e3:a},e}():function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){for(var b=this._htOption,c=this._el,d=a.getModuleCount(),e=Math.floor(b.width/d),f=Math.floor(b.height/d),g=['<table style="border:0;border-collapse:collapse;">'],h=0;d>h;h++){g.push("<tr>");for(var i=0;d>i;i++)g.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(a.isDark(h,i)?b.colorDark:b.colorLight)+';"></td>');g.push("</tr>")}g.push("</table>"),c.innerHTML=g.join("");var j=c.childNodes[0],k=(b.width-j.offsetWidth)/2,l=(b.height-j.offsetHeight)/2;k>0&&l>0&&(j.style.margin=l+"px "+k+"px")},a.prototype.clear=function(){this._el.innerHTML=""},a}();QRCode=function(a,b){if(this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:d.H},"string"==typeof b&&(b={text:b}),b)for(var c in b)this._htOption[c]=b[c];"string"==typeof a&&(a=document.getElementById(a)),this._android=n(),this._el=a,this._oQRCode=null,this._oDrawing=new q(this._el,this._htOption),this._htOption.text&&this.makeCode(this._htOption.text)},QRCode.prototype.makeCode=function(a){this._oQRCode=new b(r(a,this._htOption.correctLevel),this._htOption.correctLevel),this._oQRCode.addData(a),this._oQRCode.make(),this._el.title=a,this._oDrawing.draw(this._oQRCode),this.makeImage()},QRCode.prototype.makeImage=function(){"function"==typeof this._oDrawing.makeImage&&(!this._android||this._android>=3)&&this._oDrawing.makeImage()},QRCode.prototype.clear=function(){this._oDrawing.clear()},QRCode.CorrectLevel=d}();
-</script>
-
-<script>
-/* ===== UTILITÁRIOS ===== */
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2400);
+function scrollToId(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
 
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-' + tab).classList.add('active');
-  document.getElementById('panel-' + tab).classList.add('active');
+function selectProduct(type) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  document.getElementById('card-' + type).classList.add('active');
+  document.getElementById('sim-type').value = type;
+  calcSim();
+  scrollToId('simulador');
 }
 
-function sanitizeNum(v) { return v.replace(/\D/g, ''); }
-
-/* ===== WHATSAPP ===== */
-function gerarLinkWA() {
-  const num = sanitizeNum(document.getElementById('wa-numero').value);
-  const msg = document.getElementById('wa-mensagem').value.trim();
-  const box = document.getElementById('wa-result');
-  const txt = document.getElementById('wa-link-text');
-  if (num.length < 10) { box.classList.remove('show'); return; }
-  let url = 'https://wa.me/55' + num;
-  if (msg) url += '?text=' + encodeURIComponent(msg);
-  txt.textContent = url;
-  box.classList.add('show');
+function maskMoney(input) {
+  let v = input.value.replace(/\D/g, '');
+  v = (v / 100).toFixed(2) + '';
+  v = v.replace('.', ',');
+  v = v.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  input.value = 'R$ ' + v;
 }
 
-function getLinkWA() {
-  const num = sanitizeNum(document.getElementById('wa-numero').value);
-  const msg = document.getElementById('wa-mensagem').value.trim();
-  if (num.length < 10) return '';
-  let url = 'https://wa.me/55' + num;
-  if (msg) url += '?text=' + encodeURIComponent(msg);
-  return url;
+function parseMoney(str) {
+  return parseFloat(str.replace('R$ ', '').replace(/\./g, '').replace(',', '.'));
 }
 
-function abrirLinkWA() {
-  const url = getLinkWA();
-  if (!url) { showToast('Digite um número válido com DDD'); return; }
-  window.open(url, '_blank');
+function fmtMoney(n) {
+  return 'R$ ' + n.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
 }
 
-function copiarLinkWA() {
-  const url = getLinkWA();
-  if (!url) { showToast('Digite um número válido com DDD'); return; }
-  navigator.clipboard.writeText(url).then(() => showToast('Link copiado!'));
-}
+function calcSim() {
+  const type = document.getElementById('sim-type').value;
+  const valor = parseMoney(document.getElementById('sim-valor').value);
+  const parcelas = parseInt(document.getElementById('sim-parcelas').value);
 
-/* ===== PIX ===== */
-function formatarValor(el) {
-  let v = el.value.replace(/\D/g, '');
-  if (v === '') { el.value = ''; return; }
-  v = (parseInt(v, 10) / 100).toFixed(2).replace('.', ',');
-  el.value = v;
-}
+  const taxas = { pessoal: 1.49, empresa: 0.99, aposentado: 0.99 };
+  const taxa = taxas[type] || 1.49;
+  const i = taxa / 100;
 
-function parseValor(v) {
-  if (!v) return '';
-  return v.replace(',', '.');
-}
-
-function crc16(str) {
-  let crc = 0xFFFF;
-  for (let i = 0; i < str.length; i++) {
-    crc ^= str.charCodeAt(i) << 8;
-    for (let j = 0; j < 8; j++) {
-      crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) : (crc << 1);
-      crc &= 0xFFFF;
-    }
-  }
-  return crc.toString(16).toUpperCase().padStart(4, '0');
-}
-
-function emv(id, value) {
-  const len = value.length.toString().padStart(2, '0');
-  return id + len + value;
-}
-
-let currentPixPayload = '';
-let qrCodeObj = null;
-
-function gerarPix() {
-  const chave = document.getElementById('pix-chave').value.trim();
-  const valor = parseValor(document.getElementById('pix-valor').value.trim());
-  const txid = document.getElementById('pix-txid').value.trim() || '***';
-  const nome = document.getElementById('pix-nome').value.trim() || 'RECEBEDOR';
-  const cidade = document.getElementById('pix-cidade').value.trim() || 'CIDADE';
-  const box = document.getElementById('pix-result');
-  const txt = document.getElementById('pix-code-text');
-  const qrSection = document.getElementById('qr-section');
-
-  if (!chave) {
-    box.classList.remove('show');
-    qrSection.classList.remove('show');
-    currentPixPayload = '';
-    return;
+  let pmt;
+  if (i === 0) {
+    pmt = valor / parcelas;
+  } else {
+    pmt = valor * (i * Math.pow(1 + i, parcelas)) / (Math.pow(1 + i, parcelas) - 1);
   }
 
-  const gui = emv('00', 'br.gov.bcb.pix');
-  const key = emv('01', chave);
-  const merchantAccount = emv('26', gui + key);
+  const total = pmt * parcelas;
+  const juros = total - valor;
 
-  let payload = '';
-  payload += emv('00', '01');
-  payload += merchantAccount;
-  payload += emv('52', '0000');
-  payload += emv('53', '986');
-  if (valor && parseFloat(valor) > 0) {
-    payload += emv('54', valor);
+  document.getElementById('res-taxa').textContent = taxa.toFixed(2).replace('.', ',') + '% a.m.';
+  document.getElementById('res-parcela').textContent = fmtMoney(pmt);
+  document.getElementById('res-juros').textContent = fmtMoney(juros);
+  document.getElementById('res-total').textContent = fmtMoney(total);
+
+  const typeNames = { pessoal: 'Empréstimo Pessoal', empresa: 'Empréstimo Empresarial', aposentado: 'Consignado Aposentados' };
+  const msg = `Olá! Quero solicitar um empréstimo.
+
+Tipo: ${typeNames[type]}
+Valor: ${fmtMoney(valor)}
+Parcelas: ${parcelas}x
+Taxa: ${taxa.toFixed(2).replace('.', ',')}% a.m.
+Valor da parcela: ${fmtMoney(pmt)}
+Total a pagar: ${fmtMoney(total)}`;
+
+  document.getElementById('sim-wa-btn').href = 'https://wa.me/5511999999999?text=' + encodeURIComponent(msg);
+}
+
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+function openModal(id) {
+  document.getElementById('modal-' + id).classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(event, id) {
+  if (event.target === document.getElementById('modal-' + id)) {
+    document.getElementById('modal-' + id).classList.remove('show');
+    document.body.style.overflow = '';
   }
-  payload += emv('58', 'BR');
-  payload += emv('59', nome.substring(0, 25));
-  payload += emv('60', cidade.substring(0, 15));
-  const txidField = emv('05', txid.substring(0, 25));
-  payload += emv('62', txidField);
-  payload += '6304';
-  const crc = crc16(payload);
-  payload += crc;
-
-  currentPixPayload = payload;
-  txt.textContent = payload;
-  box.classList.add('show');
-
-  // Gerar QR Code visível usando QRCode.js
-  const placeholder = document.getElementById('qr-placeholder');
-  placeholder.innerHTML = '';
-  qrCodeObj = new QRCode(placeholder, {
-    text: payload,
-    width: 220,
-    height: 220,
-    colorDark: '#0f0f23',
-    colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
-  });
-  qrSection.classList.add('show');
 }
 
-function copiarPix() {
-  if (!currentPixPayload) { showToast('Preencha a chave PIX'); return; }
-  navigator.clipboard.writeText(currentPixPayload).then(() => showToast('Código PIX copiado!'));
+function closeModalDirect(id) {
+  document.getElementById('modal-' + id).classList.remove('show');
+  document.body.style.overflow = '';
 }
 
-function baixarQRCode() {
-  const placeholder = document.getElementById('qr-placeholder');
-  const img = placeholder.querySelector('img');
-  if (!currentPixPayload || !img) { showToast('Gere o PIX primeiro'); return; }
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
+    document.body.style.overflow = '';
+  }
+});
 
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const size = 600;
-  const padding = 40;
-  canvas.width = size + padding * 2;
-  canvas.height = size + padding * 2 + 70;
-
-  // Fundo branco
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Desenhar imagem do QR
-  ctx.drawImage(img, padding, padding, size, size);
-
-  // Texto
-  ctx.fillStyle = '#0f0f23';
-  ctx.font = 'bold 24px Inter, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('QR Code PIX', canvas.width / 2, size + padding + 50);
-
-  const link = document.createElement('a');
-  link.download = 'qrcode-pix.png';
-  link.href = canvas.toDataURL('image/png');
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  showToast('QR Code baixado!');
-}
+window.addEventListener('load', calcSim);
 </script>
 
 </body>
