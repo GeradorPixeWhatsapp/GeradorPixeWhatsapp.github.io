@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal do Cliente — Atendimento & Suporte</title>
+    <title>Nio Internet Fibra — Atendimento & Suporte</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --green: #00c853;
-            --green-light: #00e676;
-            --green-dark: #009624;
-            --green-glow: rgba(0, 200, 83, 0.35);
-            --black: #0a0a0a;
-            --black-light: #1a1a1a;
-            --black-soft: #2a2a2a;
+            --green: #00e676;
+            --green-light: #39ff14;
+            --green-dark: #00c853;
+            --green-glow: rgba(57, 255, 20, 0.35);
+            --black: #ffffff;
+            --black-light: #f0fdf4;
+            --black-soft: #dcfce7;
             --white: #ffffff;
             --gray: #f5f5f5;
             --gray-light: #fafafa;
             --gray-dark: #888888;
-            --text: #0a0a0a;
-            --text-light: #444444;
-            --text-muted: #777777;
+            --text: #064e3b;
+            --text-light: #065f46;
+            --text-muted: #10b981;
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -80,8 +80,8 @@
         .delay-5 { animation-delay: 0.5s; }
 
         .top-bar {
-            background: var(--black);
-            color: var(--white);
+            background: #064e3b;
+            color: #ffffff;
             padding: 12px 24px;
             display: flex;
             justify-content: center;
@@ -95,8 +95,8 @@
         .top-bar span { font-weight: 500; letter-spacing: 0.5px; }
         .top-bar .btn-outline {
             background: transparent;
-            border: 1.5px solid var(--green);
-            color: var(--green);
+            border: 1.5px solid #39ff14;
+            color: #39ff14;
             padding: 8px 20px;
             border-radius: 50px;
             font-weight: 600;
@@ -109,8 +109,8 @@
             gap: 8px;
         }
         .top-bar .btn-outline:hover {
-            background: var(--green);
-            color: var(--black);
+            background: #39ff14;
+            color: #064e3b;
             transform: translateY(-1px);
         }
 
@@ -135,7 +135,7 @@
         .logo {
             font-size: 1.3rem;
             font-weight: 800;
-            color: var(--black);
+            color: #064e3b;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -149,7 +149,7 @@
         }
         .nav-links a {
             text-decoration: none;
-            color: var(--text-light);
+            color: #065f46;
             font-weight: 600;
             font-size: 0.9rem;
             transition: color 0.3s ease;
@@ -162,10 +162,10 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--green);
+            background: #00e676;
             transition: width 0.3s ease;
         }
-        .nav-links a:hover { color: var(--green); }
+        .nav-links a:hover { color: #00e676; }
         .nav-links a:hover::after { width: 100%; }
 
         .mobile-toggle {
@@ -173,7 +173,7 @@
             background: none;
             border: none;
             font-size: 1.4rem;
-            color: var(--black);
+            color: #064e3b;
             cursor: pointer;
         }
 
@@ -186,7 +186,7 @@
             text-align: center;
             padding: 80px 24px;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--black) 0%, #0f1f0f 30%, #0a1a0a 70%, #050a05 100%);
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 30%, #047857 70%, #059669 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
         }
@@ -215,8 +215,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(0,200,83,0.15);
-            border: 1px solid rgba(0,200,83,0.3);
+            background: rgba(57,255,20,0.15);
+            border: 1px solid rgba(57,255,20,0.3);
             backdrop-filter: blur(10px);
             padding: 8px 20px;
             border-radius: 50px;
@@ -226,26 +226,26 @@
             margin-bottom: 28px;
             animation: fadeInUp 0.6s ease forwards;
         }
-        .hero-badge i { color: var(--green); }
+        .hero-badge i { color: #39ff14; }
         .hero h1 {
             font-size: clamp(2.2rem, 5vw, 3.8rem);
             font-weight: 800;
             color: var(--white);
             line-height: 1.15;
             margin-bottom: 24px;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 20px rgba(6,78,59,0.3);
             animation: fadeInUp 0.6s 0.1s ease forwards;
             opacity: 0;
         }
         .hero h1 span {
-            background: linear-gradient(135deg, var(--green-light), var(--green));
+            background: linear-gradient(135deg, #39ff14, #00e676);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .hero p {
             font-size: clamp(1rem, 2vw, 1.25rem);
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.9);
             max-width: 600px;
             margin: 0 auto 36px;
             line-height: 1.7;
@@ -256,8 +256,8 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: linear-gradient(135deg, var(--green), var(--green-light));
-            color: var(--black);
+            background: linear-gradient(135deg, #00e676, #39ff14);
+            color: #064e3b;
             padding: 16px 40px;
             border-radius: 50px;
             font-weight: 800;
@@ -283,9 +283,9 @@
             opacity: 0.12;
             animation: float 6s ease-in-out infinite;
         }
-        .orb-1 { width: 300px; height: 300px; background: var(--green); top: 10%; left: 10%; animation-delay: 0s; }
-        .orb-2 { width: 250px; height: 250px; background: var(--green-light); bottom: 20%; right: 10%; animation-delay: 2s; }
-        .orb-3 { width: 200px; height: 200px; background: var(--green-dark); top: 40%; right: 30%; animation-delay: 4s; }
+        .orb-1 { width: 300px; height: 300px; background: #00e676; top: 10%; left: 10%; animation-delay: 0s; }
+        .orb-2 { width: 250px; height: 250px; background: #39ff14; bottom: 20%; right: 10%; animation-delay: 2s; }
+        .orb-3 { width: 200px; height: 200px; background: #00c853; top: 40%; right: 30%; animation-delay: 4s; }
 
         section { padding: 100px 24px; }
         .container { max-width: 1200px; margin: 0 auto; }
@@ -307,8 +307,8 @@
         }
         .section-label {
             display: inline-block;
-            background: var(--black);
-            color: var(--green);
+            background: #064e3b;
+            color: #39ff14;
             padding: 6px 16px;
             border-radius: 50px;
             font-size: 0.75rem;
@@ -318,7 +318,7 @@
             margin-bottom: 16px;
         }
 
-        .services { background: var(--gray); }
+        .services { background: #f0fdf4; }
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -340,7 +340,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--green), var(--green-light));
+            background: linear-gradient(90deg, #00e676, #39ff14);
             transform: scaleX(0);
             transition: transform 0.4s ease;
         }
@@ -363,9 +363,9 @@
             transition: transform 0.3s ease;
         }
         .service-card:hover .service-icon { transform: scale(1.1) rotate(-5deg); }
-        .icon-boleto { background: linear-gradient(135deg, var(--black), var(--black-soft)); }
+        .icon-boleto { background: linear-gradient(135deg, #064e3b, #065f46); }
         .icon-suporte { background: linear-gradient(135deg, var(--green), var(--green-light)); }
-        .icon-cancel { background: linear-gradient(135deg, var(--black-light), var(--black-soft)); }
+        .icon-cancel { background: linear-gradient(135deg, #065f46, #047857); }
         .service-card h3 {
             font-size: 1.2rem;
             font-weight: 700;
@@ -391,7 +391,7 @@
             gap: 10px;
         }
         .service-card ul li i {
-            color: var(--green);
+            color: #00e676;
             font-size: 0.8rem;
             margin-top: 4px;
             flex-shrink: 0;
@@ -410,18 +410,18 @@
             cursor: pointer;
         }
         .btn-black {
-            background: var(--black);
-            color: var(--white);
+            background: #064e3b;
+            color: #ffffff;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .btn-black:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            background: var(--black-light);
+            box-shadow: 0 8px 25px rgba(6,78,59,0.3);
+            background: #065f46;
         }
         .btn-green {
-            background: linear-gradient(135deg, var(--green), var(--green-light));
-            color: var(--black);
+            background: linear-gradient(135deg, #00e676, #39ff14);
+            color: #064e3b;
             box-shadow: 0 4px 15px rgba(0,200,83,0.3);
             font-weight: 800;
         }
@@ -431,13 +431,13 @@
         }
         .btn-outline-dark {
             background: transparent;
-            color: var(--black);
-            border: 2px solid var(--black);
+            color: #064e3b;
+            border: 2px solid #064e3b;
             box-shadow: none;
         }
         .btn-outline-dark:hover {
-            background: var(--black);
-            color: var(--white);
+            background: #064e3b;
+            color: #ffffff;
             transform: translateY(-2px);
         }
 
@@ -479,7 +479,7 @@
             transition: all 0.3s ease;
         }
         .advantage-item:hover {
-            background: var(--gray);
+            background: #f0fdf4;
             transform: translateX(8px);
         }
         .advantage-icon {
@@ -487,7 +487,7 @@
             height: 48px;
             min-width: 48px;
             border-radius: 12px;
-            background: var(--black);
+            background: #064e3b;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -511,8 +511,8 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: var(--black);
-            color: var(--white);
+            background: #064e3b;
+            color: #ffffff;
             padding: 14px 32px;
             border-radius: 50px;
             font-weight: 700;
@@ -522,11 +522,11 @@
         }
         .advantages-cta .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-            background: var(--black-light);
+            box-shadow: 0 8px 30px rgba(6,78,59,0.3);
+            background: #065f46;
         }
 
-        .steps { background: linear-gradient(180deg, var(--gray) 0%, var(--white) 100%); }
+        .steps { background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); }
         .steps-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -542,8 +542,8 @@
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: var(--black);
-            color: var(--green);
+            background: #064e3b;
+            color: #39ff14;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -573,7 +573,7 @@
             left: 20%;
             right: 20%;
             height: 2px;
-            background: linear-gradient(90deg, var(--black), var(--green));
+            background: linear-gradient(90deg, #064e3b, #00e676);
             opacity: 0.15;
             z-index: 1;
         }
@@ -585,8 +585,8 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: var(--black);
-            color: var(--white);
+            background: #064e3b;
+            color: #ffffff;
             padding: 16px 40px;
             border-radius: 50px;
             font-weight: 700;
@@ -597,13 +597,13 @@
         }
         .steps-cta .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-            background: var(--black-light);
+            box-shadow: 0 8px 30px rgba(6,78,59,0.3);
+            background: #065f46;
         }
 
         .footer {
-            background: var(--black);
-            color: var(--white);
+            background: #064e3b;
+            color: #ffffff;
             padding: 60px 24px 30px;
             text-align: center;
         }
@@ -615,13 +615,13 @@
             width: 56px;
             height: 56px;
             border-radius: 50%;
-            background: var(--green);
+            background: #39ff14;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 24px;
             font-size: 1.4rem;
-            color: var(--black);
+            color: #064e3b;
             box-shadow: 0 8px 24px rgba(0,200,83,0.3);
             animation: float 4s ease-in-out infinite;
         }
@@ -629,9 +629,10 @@
             font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 12px;
+            color: #ffffff;
         }
         .footer p {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.85);
             font-size: 1rem;
             line-height: 1.7;
             max-width: 600px;
@@ -641,8 +642,8 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: linear-gradient(135deg, var(--green), var(--green-light));
-            color: var(--black);
+            background: linear-gradient(135deg, #00e676, #39ff14);
+            color: #064e3b;
             padding: 14px 36px;
             border-radius: 50px;
             font-weight: 800;
@@ -656,11 +657,11 @@
             box-shadow: 0 8px 30px rgba(0,200,83,0.4);
         }
         .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.08);
+            border-top: 1px solid rgba(255,255,255,0.15);
             padding-top: 24px;
             margin-top: 20px;
             font-size: 0.85rem;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255,255,255,0.6);
         }
 
         .footer-legal {
@@ -673,8 +674,8 @@
         }
         .footer-legal button {
             background: transparent;
-            border: 1.5px solid rgba(255,255,255,0.2);
-            color: rgba(255,255,255,0.7);
+            border: 1.5px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.85);
             padding: 8px 20px;
             border-radius: 50px;
             font-size: 0.85rem;
@@ -732,8 +733,8 @@
         }
         .modal-card .modal-tag {
             display: inline-block;
-            background: var(--black);
-            color: var(--green);
+            background: #064e3b;
+            color: #39ff14;
             padding: 4px 14px;
             border-radius: 50px;
             font-size: 0.7rem;
@@ -766,8 +767,8 @@
             height: 40px;
             border-radius: 50%;
             border: none;
-            background: var(--black);
-            color: var(--green);
+            background: #064e3b;
+            color: #39ff14;
             font-size: 1.4rem;
             cursor: pointer;
             display: flex;
@@ -777,7 +778,7 @@
             line-height: 1;
         }
         .modal-close:hover {
-            background: var(--black-light);
+            background: #065f46;
             transform: rotate(90deg);
         }
 
@@ -877,20 +878,21 @@
 <base target="_blank">
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
     <!-- TOP BAR -->
     <div class="top-bar">
         <span><i class="fas fa-bolt" style="color:var(--green)"></i> SOLICITAR ATENDIMENTO RÁPIDO!</span>
-        <a href="https://wa.me/47920049154?text=Ol%C3%A1%21%20Gostaria%20de%20falar%20com%20um%20especialista." class="btn-outline"><i class="fas fa-headset"></i> FALAR COM ESPECIALISTA</a>
+        <a href="https://wa.me/27920022518?text=Ol%C3%A1%21%20Gostaria%20de%20falar%20com%20um%20especialista." class="btn-outline"><i class="fas fa-headset"></i> FALAR COM ESPECIALISTA</a>
     </div>
 
     <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <a href="#" class="logo">
             <i class="fas fa-wifi"></i>
-            PORTAL DO CLIENTE
+            Nio Internet Fibra
         </a>
         <!-- MENU: links são âncoras simples, SEM target="_blank" -->
         <ul class="nav-links">
@@ -916,7 +918,7 @@
             </div>
             <h1>Portal de <span>Atendimento</span> ao Cliente!</h1>
             <p>Emita boletos, tire dúvidas, soluções rápidas e eficazes para problemas de conexão, configuração e desempenho da sua rede. Tudo direto no seu celular.</p>
-            <a href="https://wa.me/47920049154?text=Ol%C3%A1%21%20Vim%20pelo%20Portal%20do%20Cliente%20e%20gostaria%20de%20solicitar%20atendimento." class="btn-primary">
+            <a href="https://wa.me/27920022518?text=Ol%C3%A1%21%20Vim%20pelo%20Portal%20do%20Cliente%20e%20gostaria%20de%20solicitar%20atendimento." class="btn-primary">
                 <i class="fas fa-comment-dots"></i>
                 SOLICITAR ATENDIMENTO
             </a>
@@ -941,7 +943,7 @@
                         <li><i class="fas fa-check-circle"></i> Dados inclusos para pagamento</li>
                         <li><i class="fas fa-check-circle"></i> Suporte rápido</li>
                     </ul>
-                    <a href="https://wa.me/47920049154?text=Ol%C3%A1%21%20Preciso%20da%202%C2%AA%20via%20do%20meu%20boleto%20atualizado." class="btn btn-black">EMITIR 2ª VIA</a>
+                    <a href="https://wa.me/27920022518?text=Ol%C3%A1%21%20Preciso%20da%202%C2%AA%20via%20do%20meu%20boleto%20atualizado." class="btn btn-black">EMITIR 2ª VIA</a>
                 </div>
                 <div class="service-card animate delay-2">
                     <div class="service-icon icon-suporte"><i class="fas fa-screwdriver-wrench"></i></div>
@@ -952,7 +954,7 @@
                         <li><i class="fas fa-check-circle"></i> Alternativas apresentadas no suporte</li>
                         <li><i class="fas fa-check-circle"></i> Procedimento online</li>
                     </ul>
-                    <a href="https://wa.me/47920049154?text=Ol%C3%A1%21%20Estou%20com%20problema%20na%20minha%20conex%C3%A3o%20e%20preciso%20de%20suporte%20t%C3%A9cnico." class="btn btn-green">SOLICITAR SUPORTE</a>
+                    <a href="https://wa.me/27920022518?text=Ol%C3%A1%21%20Estou%20com%20problema%20na%20minha%20conex%C3%A3o%20e%20preciso%20de%20suporte%20t%C3%A9cnico." class="btn btn-green">SOLICITAR SUPORTE</a>
                 </div>
                 <div class="service-card animate delay-3">
                     <div class="service-icon icon-cancel"><i class="fas fa-user-xmark" style="color:var(--green)"></i></div>
@@ -963,7 +965,7 @@
                         <li><i class="fas fa-check-circle"></i> Instruções no suporte</li>
                         <li><i class="fas fa-check-circle"></i> Atendimento sigiloso para você</li>
                     </ul>
-                    <a href="https://wa.me/47920049154?text=Ol%C3%A1%21%20Gostaria%20de%20solicitar%20o%20cancelamento%20do%20meu%20servi%C3%A7o." class="btn btn-black">CANCELAMENTO IMEDIATO</a>
+                    <a href="https://wa.me/27920022518?text=Ol%C3%A1%21%20Gostaria%20de%20solicitar%20o%20cancelamento%20do%20meu%20servi%C3%A7o." class="btn btn-black">CANCELAMENTO IMEDIATO</a>
                 </div>
             </div>
         </div>
@@ -1013,7 +1015,7 @@
                         </div>
                     </div>
                     <div class="advantages-cta animate delay-5">
-                        <a href="https://wa.me/47920049154?text=Ol%C3%A1%21%20Vim%20pelo%20Portal%20do%20Cliente%20e%20gostaria%20de%20solicitar%20atendimento." class="btn-primary"><i class="fas fa-comment-dots"></i> SOLICITAR ATENDIMENTO</a>
+                        <a href="https://wa.me/27920022518?text=Ol%C3%A1%21%20Vim%20pelo%20Portal%20do%20Cliente%20e%20gostaria%20de%20solicitar%20atendimento." class="btn-primary"><i class="fas fa-comment-dots"></i> SOLICITAR ATENDIMENTO</a>
                     </div>
                 </div>
             </div>
@@ -1047,7 +1049,7 @@
                 </div>
             </div>
             <div class="steps-cta animate">
-                <a href="https://wa.me/47920049154?text=Ol%C3%A1%21%20Vim%20pelo%20Portal%20do%20Cliente%20e%20gostaria%20de%20solicitar%20atendimento." class="btn-primary"><i class="fas fa-paper-plane"></i> SOLICITAR ATENDIMENTO</a>
+                <a href="https://wa.me/27920022518?text=Ol%C3%A1%21%20Vim%20pelo%20Portal%20do%20Cliente%20e%20gostaria%20de%20solicitar%20atendimento." class="btn-primary"><i class="fas fa-paper-plane"></i> SOLICITAR ATENDIMENTO</a>
             </div>
         </div>
     </section>
@@ -1058,7 +1060,7 @@
             <div class="footer-icon"><i class="fas fa-headset"></i></div>
             <h3>Precisa de Ajuda?</h3>
             <p>Sinta-se à vontade para entrar em contato conosco se tiver algum problema. Nossa equipe de suporte está disponível <strong>24 horas por dia, 7 dias por semana</strong>.</p>
-            <a href="https://wa.me/47920049154?text=Ol%C3%A1%21%20Preciso%20de%20ajuda.%20Vim%20pelo%20Portal%20do%20Cliente." class="btn-accent">
+            <a href="https://wa.me/27920022518?text=Ol%C3%A1%21%20Preciso%20de%20ajuda.%20Vim%20pelo%20Portal%20do%20Cliente." class="btn-accent">
                 <i class="fas fa-comment-dots"></i>
                 INICIAR ATENDIMENTO
             </a>
@@ -1069,7 +1071,7 @@
             </div>
 
             <div class="footer-bottom">
-                <p>© 2026 Portal do Cliente. Todos os direitos reservados.</p>
+                <p>© 2026 Nio Internet Fibra. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
@@ -1189,7 +1191,7 @@
     </script>
 
     <!-- BOTÃO WHATSAPP FLUTUANTE -->
-    <a href="https://wa.me/47920049154?text=Ol%C3%A1%21%20Vim%20pelo%20Portal%20do%20Cliente%20e%20gostaria%20de%20falar%20com%20um%20especialista." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
+    <a href="https://wa.me/27920022518?text=Ol%C3%A1%21%20Vim%20pelo%20Portal%20do%20Cliente%20e%20gostaria%20de%20falar%20com%20um%20especialista." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
     <div class="whatsapp-tooltip">Falar no WhatsApp</div>
